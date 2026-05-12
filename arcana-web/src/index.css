@@ -1,8 +1,20 @@
+@font-face {
+  font-family: "Belleza", sans-serif;
+  src: url(./assets/fonts/Belleza-Regular.ttf);
+}
+
+@font-face {
+  font-family: "Parisienne", sans-serif;
+  src: url(./assets/fonts/Parisienne-Regular.ttf);
+}
+
 :root {
   --background-primary-color:;
   --background-secondary-color:;
 
   --text-primary-color:;
   --text-secondary-color:;
-  
+
+  --button-primary-color:;
+  --button-secondary-color:;
 }
