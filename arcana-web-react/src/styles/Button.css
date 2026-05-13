@@ -1,0 +1,79 @@
+/* ============================================================
+   Button.css — pasta: src/styles/
+   Estilos dos botoes reutilizaveis.
+   Todas as cores vem das variaveis do index.css.
+   ============================================================ */
+
+/* ---- Base compartilhada por todos os botoes -------------- */
+.btn {
+  display: inline-block;
+  font-family: var(--fonte-corpo);
+  font-size: var(--tamanho-xs);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  padding: 10px 28px;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transicao);
+}
+
+/* ---- Botao Primario --------------------------------------
+   Usado para acoes principais: "Ver Consultas", "Comprar".
+   Fundo bordo escuro, texto bege claro.
+   ---------------------------------------------------------- */
+.btn-primary {
+  background-color: var(--cor-primaria);
+  color: var(--texto-principal);
+  border: 1px solid var(--cor-primaria);
+}
+
+/* Hover: vira dourado para indicar interatividade */
+.btn-primary:hover {
+  background-color: var(--cor-destaque);
+  border-color: var(--cor-destaque);
+  color: var(--fundo-pagina); /* texto escuro sobre fundo dourado */
+}
+
+/* ---- Botao Secundario ------------------------------------
+   Usado para acoes secundarias: "Saiba mais", "Quem sou eu".
+   Transparente com borda dourada.
+   ---------------------------------------------------------- */
+.btn-secondary {
+  background-color: transparent;
+  color: var(--cor-destaque);
+  border: 1px solid var(--cor-destaque);
+}
+
+.btn-secondary:hover {
+  background-color: var(--cor-destaque);
+  color: var(--fundo-pagina);
+}
+
+/* ---- Botao de Metodo -------------------------------------
+   Usado dentro dos cards de consulta.
+   Menor e mais discreto que os outros botoes.
+   ---------------------------------------------------------- */
+.btn-metodo {
+  background-color: transparent;
+  color: var(--texto-medio);
+  border: 1px solid var(--borda-acento);
+  font-size: 10px;
+  padding: 8px 18px;
+}
+
+.btn-metodo:hover {
+  border-color: var(--cor-destaque);
+  color: var(--cor-destaque);
+}
+
+/* ---- Botao Desabilitado ----------------------------------
+   Estado visual quando o botao nao pode ser clicado.
+   ---------------------------------------------------------- */
+.btn:disabled {
+  background-color: var(--cor-desabilitado);
+  color: var(--texto-sutil);
+  border-color: var(--cor-desabilitado);
+  cursor: not-allowed; /* cursor de proibido */
+  opacity: 0.6;
+}

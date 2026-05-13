@@ -1,0 +1,105 @@
+/* ============================================================
+   Navbar.css — pasta: src/styles/
+   Estilos da barra de navegacao.
+   Todas as cores vem das variaveis do index.css.
+   ============================================================ */
+
+/* Navbar fixa no topo com efeito de vidro fosco */
+.navbar {
+  position: sticky;          /* gruda no topo ao rolar a pagina */
+  top: 0;                    /* posicao: topo da tela */
+  z-index: 100;              /* fica na frente de todos os elementos */
+  background-color: rgba(10, 0, 6, 0.92); /* fundo semitransparente */
+  backdrop-filter: blur(12px);            /* efeito de vidro fosco */
+  border-bottom: 1px solid var(--borda-sutil);
+  padding: 0 var(--espaco-xl);
+  height: 56px;
+  display: flex;
+  justify-content: space-between; /* logo esquerda, links direita */
+  align-items: center;            /* centraliza verticalmente */
+}
+
+/* Logo com fonte cursiva e cor dourada */
+.navbar-logo {
+  font-family: var(--fonte-display);
+  font-size: 26px;
+  color: var(--cor-destaque);
+  cursor: pointer;
+}
+
+/* Container dos links de navegacao */
+.navbar-links {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+/* Cada link de navegacao */
+.navbar-links span {
+  font-family: var(--fonte-corpo);
+  font-size: var(--tamanho-sm);
+  color: var(--texto-secundario);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color var(--transicao);
+}
+
+/* Link ativo (pagina atual) ou com mouse em cima */
+.navbar-links span:hover,
+.navbar-links span.active {
+  color: var(--texto-principal);
+}
+
+/* Botao de login: tem borda e cor dourada para se destacar */
+.navbar-links span.btn-login {
+  border: 1px solid var(--borda-acento);
+  padding: 6px 18px;
+  border-radius: var(--radius-pill);
+  color: var(--cor-destaque);
+}
+
+.navbar-links span.btn-login:hover {
+  border-color: var(--cor-destaque);
+}
+
+/* Botao hamburguer: escondido por padrao no desktop */
+.navbar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--cor-destaque);
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* ---- MOBILE: telas menores que 768px --------------------- */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 var(--espaco-md);
+  }
+
+  /* Esconde os links no mobile */
+  .navbar-links {
+    display: none;
+  }
+
+  /* Mostra o hamburguer no mobile */
+  .navbar-toggle {
+    display: block;
+  }
+
+  /* Quando menu esta aberto: mostra os links em coluna */
+  .navbar-links.aberto {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 56px;
+    left: 0;
+    right: 0;
+    background-color: var(--fundo-pagina);
+    border-bottom: 1px solid var(--borda-sutil);
+    padding: var(--espaco-md);
+    gap: var(--espaco-md);
+  }
+}
