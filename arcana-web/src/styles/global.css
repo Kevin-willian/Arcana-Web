@@ -1,0 +1,41 @@
+/* ============================================================
+   global.css — pasta: src/styles/
+   CSS global: reset e variaveis de cor.
+   Importado no main.jsx para valer em toda a aplicacao.
+   CRIA este arquivo (nao existe ainda no seu projeto).
+   ============================================================ */
+
+/* Importa as fontes do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&family=Belleza&display=swap');
+
+/* Variaveis de cor — use em qualquer CSS com var(--nome) */
+:root {
+  --bg:     #0a0006; /* fundo principal */
+  --bg2:    #1a0010; /* fundo de cards */
+  --bg3:    #3d0020; /* bordo, bordas e acentos */
+  --gold:   #c9a96e; /* dourado, cor de destaque */
+  --cream:  #f0e8d8; /* bege claro, textos */
+  --muted:  #7a5060; /* texto secundario */
+  --faint:  #4a2838; /* texto sutil */
+  --border: #1e0010; /* bordas dos cards */
+}
+
+/* Reset: remove margem e padding padrao do navegador */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilo base de toda a pagina */
+body {
+  background-color: var(--bg);
+  color: var(--cream);
+  font-family: 'Belleza', sans-serif;
+  min-height: 100vh;
+}
+
+/* Remove sublinhado de links */
+a {
+  text-decoration: none;
+}
