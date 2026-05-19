@@ -1,0 +1,285 @@
+/* ============================================================
+   Conta.css — pasta: src/styles/
+   Estilos da pagina Minha Conta.
+   CRIA este arquivo.
+   ============================================================ */
+
+/* ---- CONTAINER PRINCIPAL --------------------------------- */
+.conta-page {
+  padding: var(--espaco-xl);
+  max-width: 720px; /* limita largura para melhor leitura */
+  margin: 0 auto;   /* centraliza na pagina */
+}
+
+/* ---- CABECALHO COM AVATAR -------------------------------- */
+.conta-header {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-xl);
+  padding-bottom: var(--espaco-xl);
+  border-bottom: 1px solid var(--borda-sutil);
+  margin-bottom: var(--espaco-xl);
+}
+
+/* Avatar grande com inicial do nome */
+.conta-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: var(--cor-primaria);
+  border: 3px solid var(--cor-destaque);
+  color: var(--cor-destaque);
+  font-family: var(--fonte-display);
+  font-size: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Nome e email ao lado do avatar */
+.conta-header-info {}
+
+.conta-nome-display {
+  font-family: var(--fonte-display);
+  font-size: var(--tamanho-2xl);
+  color: var(--texto-principal);
+  font-weight: normal;
+  margin-bottom: 4px;
+}
+
+.conta-email-display {
+  font-size: var(--tamanho-sm);
+  color: var(--texto-sutil);
+}
+
+/* ---- SECOES DO FORMULARIO -------------------------------- */
+/* Cada secao tem um titulo e campos agrupados */
+.conta-secao {
+  background: var(--fundo-card);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--espaco-lg);
+}
+
+/* Titulo da secao */
+.conta-secao-titulo {
+  font-size: var(--tamanho-sm);
+  color: var(--texto-sutil);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: var(--espaco-md) var(--espaco-lg);
+  border-bottom: 1px solid var(--borda-sutil);
+  background: var(--fundo-secao);
+}
+
+/* Corpo da secao com os campos */
+.conta-secao-corpo {
+  padding: var(--espaco-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-md);
+}
+
+/* ---- CAMPO INDIVIDUAL ------------------------------------ */
+.campo-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-xs);
+}
+
+/* Label do campo */
+.campo-label {
+  font-size: var(--tamanho-sm);
+  color: var(--texto-sutil);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Input do campo */
+.campo-input {
+  width: 100%;
+  background: var(--fundo-pagina);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--radius-sm);
+  padding: 10px var(--espaco-md);
+  color: var(--texto-principal);
+  font-size: var(--tamanho-md);
+  font-family: var(--fonte-corpo);
+  outline: none;
+  transition: border-color var(--transicao);
+}
+
+.campo-input:focus {
+  border-color: var(--borda-acento);
+  outline: 2px solid rgba(201, 169, 110, 0.2);
+  outline-offset: 2px;
+}
+
+/* Input desabilitado: campo que nao pode ser editado */
+.campo-input:disabled {
+  color: var(--texto-sutil);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.campo-input::placeholder {
+  color: var(--texto-sutil);
+}
+
+/* Hint: texto auxiliar abaixo do campo */
+.campo-hint {
+  font-size: var(--tamanho-xs);
+  color: var(--texto-sutil);
+  line-height: 1.5;
+}
+
+/* Erro no campo */
+.campo-erro {
+  font-size: var(--tamanho-xs);
+  color: var(--cor-erro);
+}
+
+/* Dois campos lado a lado */
+.campos-duplos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espaco-md);
+}
+
+/* ---- BOTOES DE ACAO --------------------------------------- */
+.conta-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--espaco-md);
+  padding-top: var(--espaco-sm);
+}
+
+/* Botao de salvar */
+.btn-salvar {
+  background: var(--cor-primaria);
+  color: var(--texto-principal);
+  border: 1px solid var(--borda-acento);
+  border-radius: var(--radius-sm);
+  padding: 10px 28px;
+  font-size: var(--tamanho-sm);
+  font-family: var(--fonte-corpo);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transicao);
+  min-height: 44px;
+}
+
+.btn-salvar:hover {
+  background: var(--cor-destaque);
+  border-color: var(--cor-destaque);
+  color: var(--fundo-pagina);
+}
+
+.btn-salvar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Botao cancelar / secundario */
+.btn-cancelar {
+  background: transparent;
+  color: var(--texto-sutil);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--radius-sm);
+  padding: 10px 24px;
+  font-size: var(--tamanho-sm);
+  font-family: var(--fonte-corpo);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transicao);
+  min-height: 44px;
+}
+
+.btn-cancelar:hover {
+  border-color: var(--texto-secundario);
+  color: var(--texto-principal);
+}
+
+/* ---- MENSAGEM DE SUCESSO / ERRO -------------------------- */
+/* Aparece apos salvar os dados */
+.conta-mensagem {
+  padding: var(--espaco-md);
+  border-radius: var(--radius-sm);
+  font-size: var(--tamanho-sm);
+  margin-bottom: var(--espaco-md);
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-sm);
+}
+
+.conta-mensagem.sucesso {
+  background: rgba(22, 163, 74, 0.1);
+  border: 1px solid var(--cor-sucesso);
+  color: var(--cor-sucesso);
+}
+
+.conta-mensagem.erro {
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid var(--cor-erro);
+  color: var(--cor-erro);
+}
+
+/* ---- SECAO PERIGO: excluir conta ------------------------- */
+/* Separada visualmente para evitar clique acidental */
+.conta-secao.perigo {
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+.conta-secao.perigo .conta-secao-titulo {
+  color: var(--cor-erro);
+  background: rgba(220, 38, 38, 0.05);
+}
+
+.btn-excluir {
+  background: transparent;
+  color: var(--cor-erro);
+  border: 1px solid var(--cor-erro);
+  border-radius: var(--radius-sm);
+  padding: 10px 24px;
+  font-size: var(--tamanho-sm);
+  font-family: var(--fonte-corpo);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transicao);
+  min-height: 44px;
+}
+
+.btn-excluir:hover {
+  background: rgba(220, 38, 38, 0.1);
+}
+
+/* ---- RESPONSIVIDADE -------------------------------------- */
+@media (max-width: 768px) {
+  .conta-page {
+    padding: var(--espaco-md);
+  }
+
+  .conta-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .campos-duplos {
+    grid-template-columns: 1fr;
+  }
+
+  .conta-acoes {
+    flex-direction: column;
+  }
+
+  .btn-salvar,
+  .btn-cancelar {
+    width: 100%;
+    text-align: center;
+  }
+}

@@ -1,8 +1,3 @@
-/* ============================================================
-   index.css — pasta: src/
-   CSS GLOBAL do projeto ArcanaWeb.
-   ============================================================ */
-
 @import url('https://fonts.googleapis.com/css2?family=Parisienne&family=Belleza&display=swap');
 
 :root {
@@ -29,12 +24,12 @@
   --borda-danger:       #3a0010;
   --fonte-display: 'Parisienne', cursive;
   --fonte-corpo:   'Belleza', sans-serif;
-  --tamanho-xs:    9px;
-  --tamanho-sm:   11px;
-  --tamanho-md:   13px;
-  --tamanho-lg:   15px;
-  --tamanho-xl:   22px;
-  --tamanho-2xl:  26px;
+  --tamanho-xs:   12px;
+  --tamanho-sm:   14px;
+  --tamanho-md:   16px;
+  --tamanho-lg:   18px;
+  --tamanho-xl:   24px;
+  --tamanho-2xl:  28px;
   --tamanho-hero: 72px;
   --radius-sm:    4px;
   --radius-md:   10px;
@@ -49,39 +44,12 @@
   --transicao: 0.2s ease;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 ul, ol { list-style: none; }
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-button {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-button, input, textarea, select {
-  font-family: inherit;
-}
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; height: auto; display: block; }
+button { font-family: inherit; background: none; border: none; cursor: pointer; padding: 0; }
+input, textarea, select { font-family: inherit; }
 
 body {
   background-color: var(--fundo-pagina) !important;
@@ -99,8 +67,16 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0;
 }
 
-p {
-  color: var(--texto-secundario);
-  line-height: 1.8;
-  margin-bottom: 0;
+p { color: var(--texto-secundario); line-height: 1.8; margin-bottom: 0; }
+
+/* Corrige botao primario sobrescrito pelo Bootstrap */
+.btn-primary {
+  background-color: transparent !important;
+  color: var(--cor-destaque) !important;
+  border: 1px solid var(--cor-destaque) !important;
+}
+
+.btn-primary:hover {
+  background-color: var(--cor-destaque) !important;
+  color: var(--fundo-pagina) !important;
 }

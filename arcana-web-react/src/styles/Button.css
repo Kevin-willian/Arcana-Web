@@ -23,18 +23,16 @@
    Fundo bordo escuro, texto bege claro.
    ---------------------------------------------------------- */
 .btn-primary {
-  background-color: var(--cor-primaria);
-  color: var(--texto-principal);
-  border: 1px solid var(--cor-primaria);
+  background-color: transparent;
+  color: var(--cor-destaque);
+  border: 1px solid var(--cor-destaque);
 }
 
 /* Hover: vira dourado para indicar interatividade */
 .btn-primary:hover {
   background-color: var(--cor-destaque);
-  border-color: var(--cor-destaque);
-  color: var(--fundo-pagina); /* texto escuro sobre fundo dourado */
+  color: var(--fundo-pagina);
 }
-
 /* ---- Botao Secundario ------------------------------------
    Usado para acoes secundarias: "Saiba mais", "Quem sou eu".
    Transparente com borda dourada.

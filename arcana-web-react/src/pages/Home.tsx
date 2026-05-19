@@ -1,46 +1,48 @@
 // ============================================================
-// Home.tsx — pasta: src/pages/
-// Pagina principal do ArcanaWeb com TypeScript.
-// CRIA este arquivo.
+// Home.tsx — Pagina principal do ArcanaWeb.
 //
-// Conceitos de TypeScript usados aqui:
-// - interface: define o formato de um objeto
-// - type: define os valores possiveis de uma variavel
-// - tipagem de arrays: Metodo[] significa array de Metodo
+// Servicos da cartomante: ao clicar no botao,
+// o usuario e redirecionado ao WhatsApp com um prompt
+// personalizado para cada servico.
 // ============================================================
 
-import Button from '../components/Button.tsx'
 import '../styles/Home.css'
 
-// ---- Interface das Props -----------------------------------
-// Define o que a pagina Home espera receber do App.tsx
 interface HomeProps {
   setPagina: (pagina: string) => void
 }
 
-// ---- Interface do Metodo ----------------------------------
-// Define o formato de cada objeto dentro do array "metodos".
-// Sem isso o TypeScript nao saberia quais campos existem.
-interface Metodo {
-  id: number         // identificador unico
-  nome: string       // nome do metodo
-  preco: string      // preco formatado
-  tags: string[]     // array de strings (lista de tags)
-  descricao: string  // texto descritivo
-  textoBotao: string // texto do botao de acao
+// ---- Interface do Servico --------------------------------
+interface Servico {
+  id: number
+  nome: string
+  preco: string
+  tags: string[]
+  descricao: string
+  textoBotao: string
+  promptWhatsApp: string // mensagem pre-preenchida no WhatsApp
 }
 
-// ---- Interface do Aviso -----------------------------------
+// ---- Interface do Aviso ----------------------------------
 interface Aviso {
   id: number
   titulo: string
   descricao: string
 }
 
-// ---- Dados dos metodos ------------------------------------
-// O TypeScript verifica se cada objeto segue a interface Metodo.
-// Se faltar um campo ou o tipo estiver errado, ele avisa.
-const metodos: Metodo[] = [
+// ---- Numero do WhatsApp da cartomante --------------------
+// Substitua pelo numero real (somente digitos + DDI)
+const WHATSAPP_NUMERO = '5562999999999'
+
+// ---- Funcao que abre o WhatsApp com mensagem pronta ------
+// encodeURIComponent codifica caracteres especiais para URL
+function abrirWhatsApp(prompt: string): void {
+  const url = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(prompt)}`
+  window.open(url, '_blank') // abre em nova aba
+}
+
+// ---- Servicos da cartomante ------------------------------
+const servicos: Servico[] = [
   {
     id: 1,
     nome: 'A Destemida',
@@ -48,6 +50,7 @@ const metodos: Metodo[] = [
     tags: ['Completa', 'Amor', 'Trabalho', 'Espiritual'],
     descricao: 'Consulta integral da sua vida — ambito amoroso, profissional e espiritual. Presente, obstaculos e aconselhamentos futuros. Intensa. Reveladora.',
     textoBotao: 'Quero essa consulta',
+    promptWhatsApp: 'Ola Selene! Tenho interesse na consulta *A Destemida* (R$ 250). Podemos agendar?',
   },
   {
     id: 2,
@@ -56,6 +59,7 @@ const metodos: Metodo[] = [
     tags: ['Amoroso', 'Inconsciente do outro'],
     descricao: 'Entraremos no inconsciente do seu parceiro. Pensamentos, sentimentos e intencoes reais. Pode trazer a gloria ou a ruina.',
     textoBotao: 'Vamos farejar',
+    promptWhatsApp: 'Ola Selene! Tenho interesse na consulta *Quem soltou os caes?* (R$ 190). Podemos agendar?',
   },
   {
     id: 3,
@@ -64,6 +68,7 @@ const metodos: Metodo[] = [
     tags: ['Analise energetica', 'Limpeza'],
     descricao: 'Existe algo travando seus caminhos? Analisamos com o oraculo se ha energia nociva agindo sobre voce.',
     textoBotao: 'Analisar minha energia',
+    promptWhatsApp: 'Ola Selene! Tenho interesse na consulta *Abutres do velho mundo* (R$ 120). Podemos agendar?',
   },
   {
     id: 4,
@@ -72,29 +77,17 @@ const metodos: Metodo[] = [
     tags: ['Decisoes', '30 min', 'Nao amoroso'],
     descricao: 'Para situacoes sem saida aparente. Quando nao sabe o caminho, o oraculo mostra. Voce decide o que beber.',
     textoBotao: 'Mostrar o caminho',
+    promptWhatsApp: 'Ola Selene! Tenho interesse na consulta *A cura ou o veneno?* (R$ 90). Podemos agendar?',
   },
 ]
 
-// ---- Dados dos avisos -------------------------------------
 const avisos: Aviso[] = [
-  {
-    id: 1,
-    titulo: 'Posso ser carismatica — e tambem maldita',
-    descricao: 'Nao me ofenda durante as consultas. A boca que abencoa tambem e a que amaldicoa.',
-  },
-  {
-    id: 2,
-    titulo: 'Oraculo nao substitui profissionais',
-    descricao: 'Medicos, psicologos, psiquiatras, advogados — meu trabalho e espiritual, nao clinico.',
-  },
-  {
-    id: 3,
-    titulo: 'O que foi dito, fica entre nos',
-    descricao: 'Sigilo absoluto. Confidencialidade ate a morte — e alem.',
-  },
+  { id: 1, titulo: 'Posso ser carismatica — e tambem maldita', descricao: 'Nao me ofenda durante as consultas. A boca que abencoa tambem e a que amaldicoa.' },
+  { id: 2, titulo: 'Oraculo nao substitui profissionais', descricao: 'Medicos, psicologos, psiquiatras, advogados — meu trabalho e espiritual, nao clinico.' },
+  { id: 3, titulo: 'O que foi dito, fica entre nos', descricao: 'Sigilo absoluto. Confidencialidade ate a morte — e alem.' },
 ]
 
-// ---- Componente Home --------------------------------------
+// ---- Componente Home -------------------------------------
 function Home({ setPagina }: HomeProps) {
   return (
     <>
@@ -104,19 +97,17 @@ function Home({ setPagina }: HomeProps) {
           <div className="hero-chip-dot"></div>
           BRUXA · FEITICEIRA · ORACULISTA
         </div>
-        <h1 className="hero-title">Diabrera</h1>
+        <h1 className="hero-title">ArcanaWeb</h1>
         <p className="hero-by">por Selene</p>
         <p className="hero-sub">
           Tarot consciente. Sem filtros, sem enfeites — so o que o oraculo mostra.
         </p>
-        <Button
-          texto="Ver Consultas"
-          variante="primary"
-          onClick={() => {
-            // Rola suavemente ate a secao de metodos
-            document.getElementById('metodos')?.scrollIntoView({ behavior: 'smooth' })
-          }}
-        />
+        <button
+          className="btn btn-primary"
+          onClick={() => document.getElementById('servicos')?.scrollIntoView({ behavior: 'smooth' })}
+        >
+          Ver Consultas
+        </button>
       </section>
 
       {/* QUEM SOU EU */}
@@ -135,64 +126,67 @@ function Home({ setPagina }: HomeProps) {
       {/* ANTES DE COMECAR */}
       <section className="section">
         <div className="section-tag">Antes de comecar</div>
-
-        {/* .map() percorre o array e cria um elemento para cada aviso */}
-        {/* O tipo de "aviso" e inferido automaticamente como Aviso */}
         {avisos.map((aviso: Aviso) => (
           <div key={aviso.id} className="aviso">
-            <div className="aviso-ico">
-              <div className="aviso-ico-dot"></div>
-            </div>
+            <div className="aviso-ico"><div className="aviso-ico-dot"></div></div>
             <div>
               <div className="aviso-title">{aviso.titulo}</div>
               <p className="aviso-desc">{aviso.descricao}</p>
             </div>
           </div>
         ))}
-
         <div className="aviso-warn">
-          <p>
-            Nao me responsabilizo por acoes tomadas apos a consulta.
-            Eu mostro o caminho — o que voce faz com essa informacao e sua escolha.
-          </p>
+          <p>Nao me responsabilizo por acoes tomadas apos a consulta. Eu mostro o caminho — o que voce faz com essa informacao e sua escolha.</p>
         </div>
       </section>
 
-      {/* METODOS */}
-      <section className="section" id="metodos">
+      {/* SERVICOS — clique redireciona ao WhatsApp */}
+      <section className="section" id="servicos">
         <div className="metodos-header">
-          <div className="section-tag" style={{ marginBottom: 0 }}>Metodos</div>
-          {/* metodos.length retorna o numero de itens do array */}
-          <span className="metodos-count">{metodos.length} consultas disponiveis</span>
+          <div className="section-tag" style={{ marginBottom: 0 }}>Servicos</div>
+          <span className="metodos-count">{servicos.length} consultas disponiveis</span>
         </div>
-
-        {/* GRID DE METODOS
-            A div com classe "metodos-grid" ativa o CSS Grid.
-            Todos os filhos diretos (os cards .metodo) viram
-            itens do grid e se organizam em 2 colunas no desktop
-            e 1 coluna no mobile, conforme definido no CSS. */}
         <div className="metodos-grid">
-          {metodos.map((metodo: Metodo) => (
-            <div key={metodo.id} className="metodo">
+          {servicos.map((servico: Servico) => (
+            <div key={servico.id} className="metodo">
               <div className="metodo-header">
-                <div className="metodo-name">{metodo.nome}</div>
-                <div className="metodo-price">{metodo.preco}</div>
+                <div className="metodo-name">{servico.nome}</div>
+                <div className="metodo-price">{servico.preco}</div>
               </div>
               <div className="metodo-tags">
-                {metodo.tags.map((tag: string) => (
+                {servico.tags.map((tag: string) => (
                   <span key={tag} className="metodo-tag">{tag}</span>
                 ))}
               </div>
-              <p className="metodo-desc">{metodo.descricao}</p>
-              <Button texto={metodo.textoBotao} variante="metodo" />
+              <p className="metodo-desc">{servico.descricao}</p>
+
+              {/* Botao redireciona para o WhatsApp com mensagem pronta */}
+              <button
+                className="btn btn-metodo"
+                onClick={() => abrirWhatsApp(servico.promptWhatsApp)}
+                aria-label={`Agendar ${servico.nome} via WhatsApp`}
+              >
+                 {servico.textoBotao}
+              </button>
             </div>
           ))}
         </div>
       </section>
 
+      {/* CTA LOJA */}
+      <section className="section" style={{ textAlign: 'center' }}>
+        <div className="section-tag">Loja</div>
+        <p style={{ color: 'var(--texto-medio)', fontSize: 'var(--tamanho-lg)', marginBottom: '24px', lineHeight: '1.8' }}>
+          Explore nossos produtos: velas, incensos, cristais, cartas e muito mais.
+        </p>
+        <button className="btn btn-secondary" onClick={() => setPagina('loja')}>
+           Acessar a loja
+        </button>
+      </section>
+
       {/* FOOTER */}
       <footer className="home-footer">
-        <p>© 2025 <span>Diabrera</span> — por Selene. Todos os direitos reservados.</p>
+        <p>© 2025 <span>ArcanaWeb</span> — por Selene. Todos os direitos reservados.</p>
       </footer>
     </>
   )

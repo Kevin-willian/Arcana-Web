@@ -1,42 +1,38 @@
 /* ============================================================
-   Navbar.css — pasta: src/styles/
-   Estilos da barra de navegacao.
-   Todas as cores vem das variaveis do index.css.
+   Navbar.css — estilos da barra de navegacao.
+   Inclui: menu do usuario logado, icone de carrinho,
+   dropdown de conta e menu mobile.
    ============================================================ */
 
-/* Navbar fixa no topo com efeito de vidro fosco */
 .navbar {
-  position: sticky;          /* gruda no topo ao rolar a pagina */
-  top: 0;                    /* posicao: topo da tela */
-  z-index: 100;              /* fica na frente de todos os elementos */
-  background-color: rgba(10, 0, 6, 0.92); /* fundo semitransparente */
-  backdrop-filter: blur(12px);            /* efeito de vidro fosco */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(10, 0, 6, 0.95);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--borda-sutil);
-  padding: 0 var(--espaco-xl);
-  height: 56px;
+  padding: 0 40px;
+  height: 60px;
   display: flex;
-  justify-content: space-between; /* logo esquerda, links direita */
-  align-items: center;            /* centraliza verticalmente */
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Logo com fonte cursiva e cor dourada */
 .navbar-logo {
   font-family: var(--fonte-display);
   font-size: 26px;
   color: var(--cor-destaque);
   cursor: pointer;
+  flex-shrink: 0;
 }
 
-/* Container dos links de navegacao */
 .navbar-links {
   display: flex;
   gap: 32px;
   align-items: center;
 }
 
-/* Cada link de navegacao */
 .navbar-links span {
-  font-family: var(--fonte-corpo);
   font-size: var(--tamanho-sm);
   color: var(--texto-secundario);
   letter-spacing: 2px;
@@ -45,61 +41,140 @@
   transition: color var(--transicao);
 }
 
-/* Link ativo (pagina atual) ou com mouse em cima */
 .navbar-links span:hover,
-.navbar-links span.active {
-  color: var(--texto-principal);
+.navbar-links span.active { color: var(--texto-principal); }
+
+.navbar-acoes {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-md);
 }
 
-/* Botao de login: tem borda e cor dourada para se destacar */
-.navbar-links span.btn-login {
+.navbar-btn-login {
   border: 1px solid var(--borda-acento);
   padding: 6px 18px;
   border-radius: var(--radius-pill);
   color: var(--cor-destaque);
+  font-size: var(--tamanho-sm);
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all var(--transicao);
+  min-height: 36px;
 }
 
-.navbar-links span.btn-login:hover {
-  border-color: var(--cor-destaque);
+.navbar-btn-login:hover { border-color: var(--cor-destaque); }
+
+/* Icone do carrinho */
+.navbar-carrinho {
+  position: relative;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transicao);
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Botao hamburguer: escondido por padrao no desktop */
+.navbar-carrinho:hover { background: var(--fundo-secao); }
+.navbar-carrinho-icone { font-size: 22px; }
+
+.navbar-carrinho-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--cor-destaque);
+  color: var(--fundo-pagina);
+  font-size: 10px;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-carrinho-badge.escondido { display: none; }
+
+/* Menu do usuario logado */
+.navbar-usuario { position: relative; }
+
+.navbar-usuario-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: var(--cor-primaria);
+  border: 2px solid var(--cor-destaque);
+  color: var(--cor-destaque);
+  font-family: var(--fonte-display);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transicao);
+}
+
+.navbar-usuario-btn:hover { background-color: var(--cor-destaque); color: var(--fundo-pagina); }
+
+.navbar-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background-color: var(--fundo-card);
+  border: 1px solid var(--borda-acento);
+  border-radius: var(--radius-md);
+  min-width: 200px;
+  overflow: hidden;
+  animation: fadeDown 0.15s ease;
+  z-index: 200;
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-header {
+  padding: var(--espaco-md);
+  border-bottom: 1px solid var(--borda-sutil);
+}
+
+.dropdown-nome { font-size: var(--tamanho-md); color: var(--texto-principal); }
+.dropdown-email { font-size: var(--tamanho-xs); color: var(--texto-sutil); margin-top: 2px; }
+
+.dropdown-item {
+  padding: 12px var(--espaco-md);
+  font-size: var(--tamanho-sm);
+  color: var(--texto-secundario);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-sm);
+  transition: background var(--transicao);
+  min-height: 44px;
+}
+
+.dropdown-item:hover { background: var(--fundo-secao); color: var(--texto-principal); }
+.dropdown-item.sair { color: var(--cor-erro); border-top: 1px solid var(--borda-sutil); }
+.dropdown-item.sair:hover { background: rgba(220,38,38,0.1); }
+
 .navbar-toggle {
   display: none;
-  background: none;
-  border: none;
-  color: var(--cor-destaque);
   font-size: 22px;
-  cursor: pointer;
+  color: var(--cor-destaque);
+  min-height: 44px;
+  min-width: 44px;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ---- MOBILE: telas menores que 768px --------------------- */
 @media (max-width: 768px) {
-  .navbar {
-    padding: 0 var(--espaco-md);
-  }
-
-  /* Esconde os links no mobile */
-  .navbar-links {
-    display: none;
-  }
-
-  /* Mostra o hamburguer no mobile */
-  .navbar-toggle {
-    display: block;
-  }
-
-  /* Quando menu esta aberto: mostra os links em coluna */
-  .navbar-links.aberto {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 56px;
-    left: 0;
-    right: 0;
-    background-color: var(--fundo-pagina);
-    border-bottom: 1px solid var(--borda-sutil);
-    padding: var(--espaco-md);
-    gap: var(--espaco-md);
-  }
+  .navbar { padding: 0 var(--espaco-md); }
+  .navbar-links { display: none; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; background: var(--fundo-pagina); border-bottom: 1px solid var(--borda-sutil); padding: var(--espaco-md); gap: var(--espaco-md); z-index: 99; }
+  .navbar-links.aberto { display: flex; }
+  .navbar-toggle { display: flex; }
 }

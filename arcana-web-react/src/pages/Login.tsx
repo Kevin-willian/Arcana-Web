@@ -1,301 +1,222 @@
 // ============================================================
-// Login.tsx — pasta: src/pages/
-// Pagina de Login e Cadastro com abas.
-// CRIA este arquivo.
-//
-// Conceitos de TypeScript usados aqui:
-// - useState<string>: guarda qual aba esta ativa
-// - interface: define o formato dos dados do formulario
-// - type: define os valores possiveis da aba ativa
+// Login.tsx — Login e Cadastro com validacao completa.
+// Pronto para conectar ao backend Spring Boot via fetch().
 // ============================================================
 
 import { useState } from 'react'
+type ErrosFormulario = { [campo: string]: string }
 import '../styles/Login.css'
 
-// ---- Tipo da aba ativa ------------------------------------
-// So pode ser 'entrar' ou 'cadastrar'
-// Se tentar outro valor, TypeScript avisa
 type AbaAtiva = 'entrar' | 'cadastrar'
 
-// ---- Interface das Props ----------------------------------
 interface LoginProps {
   setPagina: (pagina: string) => void
+  onLogin?: (usuario: { nome: string; sobrenome: string; email: string }) => void
 }
 
-// ---- Interface dos dados do formulario de login -----------
-// Define quais campos o formulario de login tem
-interface DadosLogin {
-  email: string
-  senha: string
+interface DadosLogin { email: string; senha: string }
+interface DadosCadastro { nome: string; sobrenome: string; email: string; senha: string; confirmarSenha: string }
+
+// ---- Funcoes de validacao --------------------------------
+// Cada funcao retorna uma mensagem de erro ou string vazia
+function validarEmail(email: string): string {
+  if (!email.trim()) return 'E-mail e obrigatorio.'
+  // Regex simples de email: tem @ e ponto depois
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'E-mail invalido.'
+  return ''
 }
 
-// ---- Interface dos dados do formulario de cadastro --------
-interface DadosCadastro {
-  nome: string
-  sobrenome: string
-  email: string
-  senha: string
-  confirmarSenha: string
+function validarSenha(senha: string): string {
+  if (!senha) return 'Senha e obrigatoria.'
+  if (senha.length < 6) return 'Senha deve ter pelo menos 6 caracteres.'
+  return ''
 }
 
-// ---- Componente Login -------------------------------------
-function Login({ setPagina }: LoginProps) {
+function validarNome(nome: string): string {
+  if (!nome.trim()) return 'Nome e obrigatorio.'
+  if (nome.trim().length < 2) return 'Nome muito curto.'
+  return ''
+}
 
-  // -- Aba ativa: 'entrar' ou 'cadastrar' -------------------
-  // Controla qual formulario esta visivel
+function Login({ setPagina, onLogin }: LoginProps) {
+
   const [abaAtiva, setAbaAtiva] = useState<AbaAtiva>('entrar')
+  const [carregando, setCarregando] = useState<boolean>(false)
 
-  // -- Dados do formulario de login -------------------------
-  // Cada campo do formulario tem seu proprio estado
-  const [dadosLogin, setDadosLogin] = useState<DadosLogin>({
-    email: '',
-    senha: '',
-  })
+  const [dadosLogin, setDadosLogin] = useState<DadosLogin>({ email: '', senha: '' })
+  const [dadosCadastro, setDadosCadastro] = useState<DadosCadastro>({ nome: '', sobrenome: '', email: '', senha: '', confirmarSenha: '' })
 
-  // -- Dados do formulario de cadastro ----------------------
-  const [dadosCadastro, setDadosCadastro] = useState<DadosCadastro>({
-    nome: '',
-    sobrenome: '',
-    email: '',
-    senha: '',
-    confirmarSenha: '',
-  })
+  // Erros por campo
+  const [errosLogin, setErrosLogin] = useState<ErrosFormulario>({})
+  const [errosCadastro, setErrosCadastro] = useState<ErrosFormulario>({})
+  const [erroGeral, setErroGeral] = useState<string>('')
 
-  // -- Mensagem de erro -------------------------------------
-  // Guarda mensagens de erro para exibir ao usuario
-  const [erro, setErro] = useState<string>('')
-
-  // -- Funcao: atualiza campo do login ---------------------
-  // "e" e o evento do input, e.target.value e o valor digitado
-  // keyof DadosLogin significa que "campo" so pode ser
-  // 'email' ou 'senha' — os campos definidos na interface
   function atualizarLogin(campo: keyof DadosLogin, valor: string): void {
     setDadosLogin({ ...dadosLogin, [campo]: valor })
-    setErro('') // limpa o erro ao digitar
+    // Limpa o erro do campo ao digitar
+    if (errosLogin[campo]) setErrosLogin({ ...errosLogin, [campo]: '' })
+    setErroGeral('')
   }
 
-  // -- Funcao: atualiza campo do cadastro ------------------
   function atualizarCadastro(campo: keyof DadosCadastro, valor: string): void {
     setDadosCadastro({ ...dadosCadastro, [campo]: valor })
-    setErro('')
+    if (errosCadastro[campo]) setErrosCadastro({ ...errosCadastro, [campo]: '' })
+    setErroGeral('')
   }
 
-  // -- Funcao: envia o formulario de login -----------------
-  function submeterLogin(): void {
-    // Validacao basica: campos vazios
-    if (!dadosLogin.email || !dadosLogin.senha) {
-      setErro('Preencha todos os campos.')
+  // ---- Valida e submete o login --------------------------
+  async function submeterLogin(): Promise<void> {
+    // Valida todos os campos antes de enviar
+    const novosErros: ErrosFormulario = {
+      email: validarEmail(dadosLogin.email),
+      senha: validarSenha(dadosLogin.senha),
+    }
+
+    // Se algum campo tem erro, mostra e nao envia
+    if (Object.values(novosErros).some(e => e !== '')) {
+      setErrosLogin(novosErros)
       return
     }
 
-    // Validacao de formato de email
-    if (!dadosLogin.email.includes('@')) {
-      setErro('Digite um e-mail valido.')
-      return
-    }
+    setCarregando(true)
 
-    // Aqui futuramente vai a chamada para a API do backend
-    // Por enquanto, so mostra um alert de sucesso
-    alert(`Login realizado! Email: ${dadosLogin.email}`)
+    // Quando conectar ao Spring Boot, substitua por:
+    // const response = await fetch('/api/auth/login', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ email: dadosLogin.email, senha: dadosLogin.senha })
+    // })
+    // if (!response.ok) {
+    //   setErroGeral('Email ou senha incorretos.')
+    //   setCarregando(false)
+    //   return
+    // }
+    // const dados = await response.json()
+    // localStorage.setItem('token', dados.token) // guarda o JWT
+    // if (onLogin) onLogin(dados.usuario)
+
+    // Simulacao (remover quando integrar)
+    await new Promise(r => setTimeout(r, 800))
+    if (onLogin) onLogin({ nome: 'Usuario', sobrenome: 'Teste', email: dadosLogin.email })
+    setCarregando(false)
   }
 
-  // -- Funcao: envia o formulario de cadastro --------------
-  function submeterCadastro(): void {
-    // Validacao: campos vazios
-    if (!dadosCadastro.nome || !dadosCadastro.email || !dadosCadastro.senha) {
-      setErro('Preencha todos os campos obrigatorios.')
+  // ---- Valida e submete o cadastro -----------------------
+  async function submeterCadastro(): Promise<void> {
+    const novosErros: ErrosFormulario = {
+      nome: validarNome(dadosCadastro.nome),
+      email: validarEmail(dadosCadastro.email),
+      senha: validarSenha(dadosCadastro.senha),
+      confirmarSenha: dadosCadastro.senha !== dadosCadastro.confirmarSenha ? 'Senhas nao coincidem.' : '',
+    }
+
+    if (Object.values(novosErros).some(e => e !== '')) {
+      setErrosCadastro(novosErros)
       return
     }
 
-    // Validacao: formato de email
-    if (!dadosCadastro.email.includes('@')) {
-      setErro('Digite um e-mail valido.')
-      return
-    }
+    setCarregando(true)
 
-    // Validacao: senhas iguais
-    if (dadosCadastro.senha !== dadosCadastro.confirmarSenha) {
-      setErro('As senhas nao coincidem.')
-      return
-    }
+    // Quando conectar ao Spring Boot, substitua por:
+    // const response = await fetch('/api/auth/cadastro', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({
+    //     nome: dadosCadastro.nome,
+    //     sobrenome: dadosCadastro.sobrenome,
+    //     email: dadosCadastro.email,
+    //     senha: dadosCadastro.senha
+    //   })
+    // })
+    // if (!response.ok) {
+    //   setErroGeral('Este email ja esta em uso.')
+    //   setCarregando(false)
+    //   return
+    // }
+    // const dados = await response.json()
+    // if (onLogin) onLogin(dados.usuario)
 
-    // Validacao: senha minima de 6 caracteres
-    if (dadosCadastro.senha.length < 6) {
-      setErro('A senha deve ter pelo menos 6 caracteres.')
-      return
-    }
-
-    // Aqui futuramente vai a chamada para a API do backend
-    alert(`Cadastro realizado! Bem-vindo(a), ${dadosCadastro.nome}!`)
+    await new Promise(r => setTimeout(r, 800))
+    if (onLogin) onLogin({ nome: dadosCadastro.nome, sobrenome: dadosCadastro.sobrenome, email: dadosCadastro.email })
+    setCarregando(false)
   }
 
   return (
     <div className="login-page">
       <div className="login-card">
 
-        {/* CABECALHO: logo e subtitulo */}
         <div className="login-header">
-          <span className="login-logo">Diabrera</span>
+          <span className="login-logo">ArcanaWeb</span>
           <p className="login-subtitle">Acesse sua conta</p>
         </div>
 
-        {/* ABAS: ENTRAR e CADASTRAR */}
         <div className="login-tabs">
-
-          {/* Aba Entrar: adiciona classe 'ativo' quando selecionada */}
-          <button
-            className={`login-tab ${abaAtiva === 'entrar' ? 'ativo' : ''}`}
-            onClick={() => {
-              setAbaAtiva('entrar')
-              setErro('') // limpa erro ao trocar de aba
-            }}
-          >
-            Entrar
-          </button>
-
-          {/* Aba Cadastrar */}
-          <button
-            className={`login-tab ${abaAtiva === 'cadastrar' ? 'ativo' : ''}`}
-            onClick={() => {
-              setAbaAtiva('cadastrar')
-              setErro('')
-            }}
-          >
-            Cadastrar
-          </button>
-
+          <button className={`login-tab ${abaAtiva === 'entrar' ? 'ativo' : ''}`} onClick={() => { setAbaAtiva('entrar'); setErroGeral('') }}>Entrar</button>
+          <button className={`login-tab ${abaAtiva === 'cadastrar' ? 'ativo' : ''}`} onClick={() => { setAbaAtiva('cadastrar'); setErroGeral('') }}>Cadastrar</button>
         </div>
 
-        {/* CORPO: renderiza o formulario da aba ativa */}
         <div className="login-body">
 
-          {/* ---- FORMULARIO DE LOGIN ---------------------- */}
-          {/* O operador && renderiza o JSX so se a condicao for true */}
+          {/* Erro geral (ex: email ja em uso) */}
+          {erroGeral && <div className="campo-erro" style={{ marginBottom: '12px', fontSize: 'var(--tamanho-sm)' }} role="alert">❌ {erroGeral}</div>}
+
+          {/* ---- LOGIN ---- */}
           {abaAtiva === 'entrar' && (
             <>
-              {/* Campo E-mail */}
               <div className="campo-grupo">
-                <label className="campo-label">E-mail</label>
-                <input
-                  type="email"
-                  className="campo-input"
-                  placeholder="seu@email.com"
-                  value={dadosLogin.email}
-                  onChange={(e) => atualizarLogin('email', e.target.value)}
-                />
+                <label className="campo-label" htmlFor="login-email">E-mail</label>
+                <input id="login-email" type="email" className={`campo-input ${errosLogin.email ? 'erro' : ''}`} placeholder="seu@email.com" value={dadosLogin.email} onChange={e => atualizarLogin('email', e.target.value)} aria-invalid={!!errosLogin.email} />
+                {errosLogin.email && <span className="campo-erro" role="alert">{errosLogin.email}</span>}
               </div>
-
-              {/* Campo Senha */}
               <div className="campo-grupo">
-                <label className="campo-label">Senha</label>
-                <input
-                  type="password"
-                  className="campo-input"
-                  placeholder="••••••••"
-                  value={dadosLogin.senha}
-                  onChange={(e) => atualizarLogin('senha', e.target.value)}
-                />
+                <label className="campo-label" htmlFor="login-senha">Senha</label>
+                <input id="login-senha" type="password" className={`campo-input ${errosLogin.senha ? 'erro' : ''}`} placeholder="••••••••" value={dadosLogin.senha} onChange={e => atualizarLogin('senha', e.target.value)} aria-invalid={!!errosLogin.senha} />
+                {errosLogin.senha && <span className="campo-erro" role="alert">{errosLogin.senha}</span>}
               </div>
-
-              {/* Mensagem de erro (aparece so se "erro" tiver valor) */}
-              {erro && <span className="campo-erro">{erro}</span>}
-
-              {/* Botao de entrar */}
-              <button className="login-btn" onClick={submeterLogin}>
-                Entrar
+              <button className="login-btn" onClick={submeterLogin} disabled={carregando} aria-busy={carregando}>
+                {carregando ? 'Entrando...' : 'Entrar'}
               </button>
-
-              {/* Link para ir para cadastro */}
-              <div className="login-footer">
-                Nao tem conta?{' '}
-                <span onClick={() => setAbaAtiva('cadastrar')}>
-                  Cadastre-se
-                </span>
-              </div>
+              <div className="login-footer">Nao tem conta? <span onClick={() => setAbaAtiva('cadastrar')}>Cadastre-se</span></div>
             </>
           )}
 
-          {/* ---- FORMULARIO DE CADASTRO ------------------- */}
+          {/* ---- CADASTRO ---- */}
           {abaAtiva === 'cadastrar' && (
             <>
-              {/* Campos Nome e Sobrenome lado a lado */}
               <div className="campos-duplos">
                 <div className="campo-grupo">
-                  <label className="campo-label">Nome</label>
-                  <input
-                    type="text"
-                    className="campo-input"
-                    placeholder="Seu nome"
-                    value={dadosCadastro.nome}
-                    onChange={(e) => atualizarCadastro('nome', e.target.value)}
-                  />
+                  <label className="campo-label" htmlFor="cad-nome">Nome *</label>
+                  <input id="cad-nome" type="text" className={`campo-input ${errosCadastro.nome ? 'erro' : ''}`} placeholder="Seu nome" value={dadosCadastro.nome} onChange={e => atualizarCadastro('nome', e.target.value)} />
+                  {errosCadastro.nome && <span className="campo-erro" role="alert">{errosCadastro.nome}</span>}
                 </div>
                 <div className="campo-grupo">
-                  <label className="campo-label">Sobrenome</label>
-                  <input
-                    type="text"
-                    className="campo-input"
-                    placeholder="Seu sobrenome"
-                    value={dadosCadastro.sobrenome}
-                    onChange={(e) => atualizarCadastro('sobrenome', e.target.value)}
-                  />
+                  <label className="campo-label" htmlFor="cad-sobrenome">Sobrenome</label>
+                  <input id="cad-sobrenome" type="text" className="campo-input" placeholder="Seu sobrenome" value={dadosCadastro.sobrenome} onChange={e => atualizarCadastro('sobrenome', e.target.value)} />
                 </div>
               </div>
-
-              {/* Campo E-mail */}
               <div className="campo-grupo">
-                <label className="campo-label">E-mail</label>
-                <input
-                  type="email"
-                  className="campo-input"
-                  placeholder="seu@email.com"
-                  value={dadosCadastro.email}
-                  onChange={(e) => atualizarCadastro('email', e.target.value)}
-                />
+                <label className="campo-label" htmlFor="cad-email">E-mail *</label>
+                <input id="cad-email" type="email" className={`campo-input ${errosCadastro.email ? 'erro' : ''}`} placeholder="seu@email.com" value={dadosCadastro.email} onChange={e => atualizarCadastro('email', e.target.value)} />
+                {errosCadastro.email && <span className="campo-erro" role="alert">{errosCadastro.email}</span>}
               </div>
-
-              {/* Campo Senha */}
-              <div className="campo-grupo">
-                <label className="campo-label">Senha</label>
-                <input
-                  type="password"
-                  className="campo-input"
-                  placeholder="Minimo 6 caracteres"
-                  value={dadosCadastro.senha}
-                  onChange={(e) => atualizarCadastro('senha', e.target.value)}
-                />
+              <div className="campos-duplos">
+                <div className="campo-grupo">
+                  <label className="campo-label" htmlFor="cad-senha">Senha *</label>
+                  <input id="cad-senha" type="password" className={`campo-input ${errosCadastro.senha ? 'erro' : ''}`} placeholder="Min. 6 caracteres" value={dadosCadastro.senha} onChange={e => atualizarCadastro('senha', e.target.value)} />
+                  {errosCadastro.senha && <span className="campo-erro" role="alert">{errosCadastro.senha}</span>}
+                </div>
+                <div className="campo-grupo">
+                  <label className="campo-label" htmlFor="cad-confirmar">Confirmar *</label>
+                  <input id="cad-confirmar" type="password" className={`campo-input ${errosCadastro.confirmarSenha ? 'erro' : ''}`} placeholder="Repita a senha" value={dadosCadastro.confirmarSenha} onChange={e => atualizarCadastro('confirmarSenha', e.target.value)} />
+                  {errosCadastro.confirmarSenha && <span className="campo-erro" role="alert">{errosCadastro.confirmarSenha}</span>}
+                </div>
               </div>
-
-              {/* Campo Confirmar Senha */}
-              <div className="campo-grupo">
-                <label className="campo-label">Confirmar Senha</label>
-                <input
-                  type="password"
-                  className="campo-input"
-                  placeholder="Repita a senha"
-                  value={dadosCadastro.confirmarSenha}
-                  onChange={(e) => atualizarCadastro('confirmarSenha', e.target.value)}
-                />
-              </div>
-
-              {/* Mensagem de erro */}
-              {erro && <span className="campo-erro">{erro}</span>}
-
-              {/* Botao de cadastrar */}
-              <button className="login-btn" onClick={submeterCadastro}>
-                Criar conta
+              <button className="login-btn" onClick={submeterCadastro} disabled={carregando} aria-busy={carregando}>
+                {carregando ? 'Criando conta...' : 'Criar conta'}
               </button>
-
-              {/* Link para ir para login */}
-              <div className="login-footer">
-                Ja tem conta?{' '}
-                <span onClick={() => setAbaAtiva('entrar')}>
-                  Entrar
-                </span>
-              </div>
+              <div className="login-footer">Ja tem conta? <span onClick={() => setAbaAtiva('entrar')}>Entrar</span></div>
             </>
           )}
-
         </div>
       </div>
     </div>
