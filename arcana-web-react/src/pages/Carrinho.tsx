@@ -6,6 +6,7 @@
 
 import { useState } from 'react'
 import { ItemCarrinho, Produto, Endereco } from '../types.ts'
+import { ShoppingCart } from 'lucide-react'
 import '../styles/Carrinho.css'
 import '../styles/Loja.css'
 
@@ -115,7 +116,7 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
       {/* CARRINHO VAZIO */}
       {itens.length === 0 && etapa === 'carrinho' && (
         <div className="carrinho-vazio">
-          <span className="carrinho-vazio-emoji">🛒</span>
+          <span className="carrinho-vazio-emoji"><ShoppingCart size={64} color="var(--cor-destaque)" /></span>
           <h2 className="carrinho-vazio-titulo">Seu carrinho esta vazio</h2>
           <p className="carrinho-vazio-texto">Explore nossa loja e adicione produtos.</p>
           <button className="carrinho-vazio-btn" onClick={() => setPagina('loja')}>Ir para a loja</button>
@@ -246,7 +247,7 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
                 <div className="produto-preco-wrap"><span className="produto-preco">{formatarPreco(p.preco)}</span></div>
                 <div className="produto-botoes">
                   <button className="produto-btn-comprar" onClick={() => { adicionarSugestao(p); setPagina('carrinho') }}>Comprar</button>
-                  <button className="produto-btn-carrinho" onClick={() => adicionarSugestao(p)} title="Adicionar ao carrinho">🛒</button>
+                  <button className="produto-btn-carrinho" onClick={() => adicionarSugestao(p)} title="Adicionar ao carrinho"><ShoppingCart size={18} color="var(--cor-destaque)"/></button>
                 </div>
               </div>
             </article>

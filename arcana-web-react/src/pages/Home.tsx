@@ -46,7 +46,7 @@ const servicos: Servico[] = [
   {
     id: 1,
     nome: 'A Destemida',
-    preco: 'R$ 250',
+    preco: 'R$ 250,00',
     tags: ['Completa', 'Amor', 'Trabalho', 'Espiritual'],
     descricao: 'Consulta integral da sua vida — ambito amoroso, profissional e espiritual. Presente, obstaculos e aconselhamentos futuros. Intensa. Reveladora.',
     textoBotao: 'Quero essa consulta',
@@ -55,7 +55,7 @@ const servicos: Servico[] = [
   {
     id: 2,
     nome: 'Quem soltou os caes?',
-    preco: 'R$ 190',
+    preco: 'R$ 190,00',
     tags: ['Amoroso', 'Inconsciente do outro'],
     descricao: 'Entraremos no inconsciente do seu parceiro. Pensamentos, sentimentos e intencoes reais. Pode trazer a gloria ou a ruina.',
     textoBotao: 'Vamos farejar',
@@ -64,7 +64,7 @@ const servicos: Servico[] = [
   {
     id: 3,
     nome: 'Abutres do velho mundo',
-    preco: 'R$ 120',
+    preco: 'R$ 120,00',
     tags: ['Analise energetica', 'Limpeza'],
     descricao: 'Existe algo travando seus caminhos? Analisamos com o oraculo se ha energia nociva agindo sobre voce.',
     textoBotao: 'Analisar minha energia',
@@ -73,7 +73,7 @@ const servicos: Servico[] = [
   {
     id: 4,
     nome: 'A cura ou o veneno?',
-    preco: 'R$ 90',
+    preco: 'R$ 90,00',
     tags: ['Decisoes', '30 min', 'Nao amoroso'],
     descricao: 'Para situacoes sem saida aparente. Quando nao sabe o caminho, o oraculo mostra. Voce decide o que beber.',
     textoBotao: 'Mostrar o caminho',
@@ -162,7 +162,7 @@ function Home({ setPagina }: HomeProps) {
 
               {/* Botao redireciona para o WhatsApp com mensagem pronta */}
               <button
-                className="btn btn-metodo"
+                className="btn btn-secondary"
                 onClick={() => abrirWhatsApp(servico.promptWhatsApp)}
                 aria-label={`Agendar ${servico.nome} via WhatsApp`}
               >
@@ -179,7 +179,7 @@ function Home({ setPagina }: HomeProps) {
         <p style={{ color: 'var(--texto-medio)', fontSize: 'var(--tamanho-lg)', marginBottom: '24px', lineHeight: '1.8' }}>
           Explore nossos produtos: velas, incensos, cristais, cartas e muito mais.
         </p>
-        <button className="btn btn-secondary" onClick={() => setPagina('loja')}>
+        <button className="btn btn-primary" onClick={() => setPagina('loja')}>
            Acessar a loja
         </button>
       </section>

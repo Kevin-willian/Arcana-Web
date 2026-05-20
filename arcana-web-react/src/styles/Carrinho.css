@@ -4,7 +4,7 @@
 
 .carrinho-page { padding: var(--espaco-xl); }
 
-.carrinho-titulo { font-family: var(--fonte-display); font-size: 40px; color: var(--texto-principal); font-weight: normal; margin-bottom: var(--espaco-xl); }
+.carrinho-titulo { font-family: var(--fonte-corpo); font-size: 40px; color: var(--texto-principal); font-weight: normal; margin-bottom: var(--espaco-xl); }
 
 /* Layout em duas colunas: itens + resumo */
 .carrinho-layout {

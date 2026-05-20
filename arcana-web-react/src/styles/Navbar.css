@@ -20,7 +20,7 @@
 
 .navbar-logo {
   font-family: var(--fonte-display);
-  font-size: 26px;
+  font-size: 38px;
   color: var(--cor-destaque);
   cursor: pointer;
   flex-shrink: 0;

@@ -6,6 +6,7 @@
 
 import { useState } from 'react'
 import { Produto } from '../types.ts'
+import { ShoppingCart } from 'lucide-react'
 import '../styles/Loja.css'
 
 interface LojaProps {
@@ -141,7 +142,7 @@ function Loja({ setPagina, onAdicionarCarrinho }: LojaProps) {
                   aria-label={`Adicionar ${produto.nome} ao carrinho`}
                   title="Adicionar ao carrinho"
                 >
-                  {adicionado === produto.id ? '✓' : '🛒'}
+                  <ShoppingCart size={18} color="var(--cor-destaque)"/>
                 </button>
               </div>
             </div>

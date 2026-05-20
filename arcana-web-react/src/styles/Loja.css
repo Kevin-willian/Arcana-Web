@@ -19,7 +19,7 @@
 
 /* Titulo da secao */
 .loja-titulo {
-  font-family: var(--fonte-display);
+  font-family: var(--fonte-corpo);
   font-size: 40px;
   color: var(--texto-principal);
   font-weight: normal;
@@ -178,7 +178,7 @@
 .produto-nome {
   font-size: var(--tamanho-md);
   color: var(--texto-principal);
-  font-family: var(--fonte-corpo);
+  font-family: var(--fonte-corpo) !important;
   margin-bottom: var(--espaco-xs);
   line-height: 1.4;
 }

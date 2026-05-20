@@ -4,7 +4,7 @@
    ============================================================ */
 
 .pedidos-page { padding: var(--espaco-xl); }
-.pedidos-titulo { font-family: var(--fonte-display); font-size: 40px; color: var(--texto-principal); font-weight: normal; margin-bottom: var(--espaco-xs); }
+.pedidos-titulo { font-family: var(--fonte-corpo); font-size: 40px; color: var(--texto-principal); font-weight: normal; margin-bottom: var(--espaco-xs); }
 .pedidos-subtitulo { font-size: var(--tamanho-md); color: var(--texto-secundario); margin-bottom: var(--espaco-xl); }
 
 .pedidos-filtros { display: flex; gap: var(--espaco-sm); flex-wrap: wrap; margin-bottom: var(--espaco-xl); }
