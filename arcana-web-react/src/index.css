@@ -1,55 +1,81 @@
-@import url('https://fonts.googleapis.com/css2?family=Parisienne&family=Belleza&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Parisienne&family=Belleza&display=swap");
 
 :root {
-  --fundo-pagina:       #0a0006;
-  --fundo-card:         #110008;
-  --fundo-secao:        #1a0010;
-  --fundo-acento:       #3d0020;
+  --fundo-pagina: #0a0006;
+  --fundo-card: #110008;
+  --fundo-secao: #1a0010;
+  --fundo-acento: #3d0020;
   --fundo-aviso-danger: #180008;
-  --texto-principal:    #f0e8d8;
-  --texto-secundario:   #7a5060;
-  --texto-sutil:        #4a2838;
-  --texto-medio:        #b09080;
-  --texto-tag:          #7a3848;
-  --texto-danger:       #7a3040;
-  --texto-chip:         #9a7080;
-  --cor-destaque:       #c9a96e;
-  --cor-primaria:       #3d0020;
-  --cor-sucesso:        #16a34a;
-  --cor-erro:           #dc2626;
-  --cor-alerta:         #d97706;
-  --cor-desabilitado:   #6b7280;
-  --borda-sutil:        #1e0010;
-  --borda-acento:       #3d0020;
-  --borda-danger:       #3a0010;
-  --fonte-display: 'Parisienne', cursive;
-  --fonte-corpo:   'Belleza', sans-serif;
-  --tamanho-xs:   12px;
-  --tamanho-sm:   14px;
-  --tamanho-md:   16px;
-  --tamanho-lg:   18px;
-  --tamanho-xl:   24px;
-  --tamanho-2xl:  28px;
+  --texto-principal: #f0e8d8;
+  --texto-secundario: #7a5060;
+  --texto-sutil: #f0e8d8;
+  --texto-medio: #f0e8d8;
+  --texto-tag: #7a3848;
+  --texto-danger: #7a3040;
+  --texto-chip: #9a7080;
+  --cor-destaque: #c9a96e;
+  --cor-primaria: #3d0020;
+  --cor-sucesso: #16a34a;
+  --cor-erro: #dc2626;
+  --cor-alerta: #d97706;
+  --cor-desabilitado: #6b7280;
+  --borda-sutil: #1e0010;
+  --borda-acento: #3d0020;
+  --borda-danger: #3a0010;
+  --fonte-display: "Parisienne", cursive;
+  --fonte-corpo: "Belleza", sans-serif;
+  --tamanho-xs: 12px;
+  --tamanho-sm: 14px;
+  --tamanho-md: 18px;
+  --tamanho-lg: 22px;
+  --tamanho-xl: 24px;
+  --tamanho-2xl: 28px;
   --tamanho-hero: 72px;
-  --radius-sm:    4px;
-  --radius-md:   10px;
-  --radius-lg:   12px;
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
   --radius-pill: 20px;
-  --espaco-xs:   4px;
-  --espaco-sm:   8px;
-  --espaco-md:  16px;
-  --espaco-lg:  24px;
-  --espaco-xl:  40px;
+  --espaco-xs: 4px;
+  --espaco-sm: 8px;
+  --espaco-md: 16px;
+  --espaco-lg: 24px;
+  --espaco-xl: 40px;
   --espaco-2xl: 56px;
   --transicao: 0.2s ease;
 }
 
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-ul, ol { list-style: none; }
-a { text-decoration: none; color: inherit; }
-img { max-width: 100%; height: auto; display: block; }
-button { font-family: inherit; background: none; border: none; cursor: pointer; padding: 0; }
-input, textarea, select { font-family: inherit; }
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+ul,
+ol {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+button {
+  font-family: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+input,
+textarea,
+select {
+  font-family: inherit;
+}
 
 body {
   background-color: var(--fundo-pagina) !important;
@@ -60,14 +86,23 @@ body {
   min-height: 100vh;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--fonte-display) !important;
   font-weight: normal !important;
   color: var(--texto-principal) !important;
   margin-bottom: 0;
 }
 
-p { color: var(--texto-secundario); line-height: 1.8; margin-bottom: 0; }
+p {
+  color: var(--texto-secundario);
+  line-height: 1.8;
+  margin-bottom: 0;
+}
 
 /* Corrige botao primario sobrescrito pelo Bootstrap */
 .btn-primary {
