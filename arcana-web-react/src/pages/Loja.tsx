@@ -31,18 +31,18 @@ const categorias: CategoriaItem[] = [
 // const [produtos, setProdutos] = useState<Produto[]>([])
 // useEffect(() => { fetch('/api/produtos').then(r => r.json()).then(setProdutos) }, [])
 const produtos: Produto[] = [
-  { id: 1,  nome: 'Baralho Rider-Waite Tarot', descricao: 'O tarot mais famoso do mundo. 78 cartas com simbolismo rico e detalhado.',      preco: 89.90, categoria: 'cartas',    emoji: '🃏' },
-  { id: 2,  nome: 'Oraculo das Bruxas',         descricao: '44 cartas com mensagens de sabedoria ancestral e magia feminina.',               preco: 67.00, categoria: 'cartas',    emoji: '🔮' },
-  { id: 3,  nome: 'Vela Preta — Protecao',      descricao: 'Vela artesanal com ervas de protecao. Aroma de patchouli e cedro.',             preco: 28.50, categoria: 'velas',     emoji: '🕯️' },
-  { id: 4,  nome: 'Vela Roxa — Intuicao',       descricao: 'Desperta a intuicao e conexao espiritual. Aroma de lavanda e sandalo.',         preco: 28.50, categoria: 'velas',     emoji: '🕯️' },
-  { id: 5,  nome: 'Incenso Nag Champa',         descricao: 'Caixa com 20 varetas. O incenso mais usado em rituais e meditacao.',            preco: 18.00, categoria: 'incensos',  emoji: '🪔' },
-  { id: 6,  nome: 'Incenso Sandalo',            descricao: 'Purificacao e harmonia. Caixa com 20 varetas artesanais.',                      preco: 18.00, categoria: 'incensos',  emoji: '🪔' },
-  { id: 7,  nome: 'Ametista Bruta',             descricao: 'Pedra natural de ametista para equilibrio emocional e protecao energetica.',    preco: 45.00, categoria: 'cristais',  emoji: '💜' },
-  { id: 8,  nome: 'Quartzo Rosa',               descricao: 'Cristal do amor e da harmonia. Pedra bruta natural selecionada.',               preco: 35.00, categoria: 'cristais',  emoji: '🩷' },
-  { id: 9,  nome: 'Guia do Tarot para Iniciantes', descricao: 'Aprenda a ler o tarot do zero. 200 paginas com exemplos praticos.',          preco: 52.00, categoria: 'livros',    emoji: '📖' },
-  { id: 10, nome: 'Bolsa de Veludo para Cartas', descricao: 'Guarde e proteja seu baralho. Veludo roxo com fecho dourado.',                  preco: 22.00, categoria: 'acessorios',emoji: '👜' },
-  { id: 11, nome: 'Suporte de Madeira para Cartas', descricao: 'Apoio artesanal em madeira para exibir suas cartas durante a leitura.',     preco: 38.00, categoria: 'acessorios',emoji: '🪵' },
-  { id: 12, nome: 'Kit Iniciante Tarot',         descricao: 'Baralho + guia + bolsa de veludo. O kit completo para comecar sua jornada.',   preco: 149.00,categoria: 'cartas',    emoji: '✨' },
+  { id: 1,  nome: 'Baralho Rider-Waite Tarot', descricao: 'O tarot mais famoso do mundo. 78 cartas com simbolismo rico e detalhado.',      preco: 89.90, categoria: 'cartas',    emoji: '🃏', imagem: '../../public/assets/baralho-wider-tarot.jpg' },
+  { id: 2,  nome: 'Oraculo das Bruxas',         descricao: '44 cartas com mensagens de sabedoria ancestral e magia feminina.',               preco: 67.00, categoria: 'cartas',    emoji: '🔮', imagem: '../assets/oraculo-baralho-das-bruxas.webp' },
+  { id: 3,  nome: 'Vela Preta — Protecao',      descricao: 'Vela artesanal com ervas de protecao. Aroma de patchouli e cedro.',             preco: 28.50, categoria: 'velas',     emoji: '🕯️', imagem:'../assets/vela-preta.webp'},
+  { id: 4,  nome: 'Vela Roxa — Intuicao',       descricao: 'Desperta a intuicao e conexao espiritual. Aroma de lavanda e sandalo.',         preco: 28.50, categoria: 'velas',     emoji: '🕯️', imagem: '../assets/vela-roxa.webp'},
+  { id: 5,  nome: 'Incenso Nag Champa',         descricao: 'Caixa com 20 varetas. O incenso mais usado em rituais e meditacao.',            preco: 18.00, categoria: 'incensos',  emoji: '🪔', imagem: '../assets/incenso-nag-champa.webp'},
+  { id: 6,  nome: 'Incenso Sandalo',            descricao: 'Purificacao e harmonia. Caixa com 20 varetas artesanais.',                      preco: 18.00, categoria: 'incensos',  emoji: '🪔', imagem: '../assets/incenso-tandalo.webp' },
+  { id: 7,  nome: 'Ametista Bruta',             descricao: 'Pedra natural de ametista para equilibrio emocional e protecao energetica.',    preco: 45.00, categoria: 'cristais',  emoji: '💜', imagem: '../assets/ametista-bruta.webp'},
+  { id: 8,  nome: 'Quartzo Rosa',               descricao: 'Cristal do amor e da harmonia. Pedra bruta natural selecionada.',               preco: 35.00, categoria: 'cristais',  emoji: '🩷', imagem: '../assets/quartzo-rosa.webp' },
+  { id: 9,  nome: 'Guia do Tarot para Iniciantes', descricao: 'Aprenda a ler o tarot do zero. 200 paginas com exemplos praticos.',          preco: 52.00, categoria: 'livros',    emoji: '📖', imagem: '../assets/guia-do-tarot-para-iniciantes.webp'},
+  { id: 10, nome: 'Bolsa de Veludo para Cartas', descricao: 'Guarde e proteja seu baralho. Veludo roxo com fecho dourado.',                  preco: 22.00, categoria: 'acessorios',emoji: '👜', imagem: '../assets/bolsa-de-veludo-para-cartas.webp'},
+  { id: 11, nome: 'Suporte de Madeira para Cartas', descricao: 'Apoio artesanal em madeira para exibir suas cartas durante a leitura.',     preco: 38.00, categoria: 'acessorios',emoji: '🪵', imagem: '../assets/suporte-de-madeira-para-cartas.webp'},
+  { id: 12, nome: 'Kit Iniciante Tarot',         descricao: 'Baralho + guia + bolsa de veludo. O kit completo para comecar sua jornada.',   preco: 149.00,categoria: 'cartas',    emoji: '✨', imagem: '../assets/kit-iniciante-tarot.webp' },
 ]
 
 function Loja({ setPagina, onAdicionarCarrinho }: LojaProps) {

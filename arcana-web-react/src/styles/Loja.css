@@ -136,7 +136,9 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: border-color var(--transicao), transform var(--transicao);
+  transition:
+    border-color var(--transicao),
+    transform var(--transicao);
   cursor: pointer;
 }
 
@@ -155,21 +157,20 @@
 /* Imagem do produto */
 .produto-imagem {
   width: 100%;
-  aspect-ratio: 1 / 1; /* quadrado perfeito */
-  object-fit: cover;   /* imagem cobre o espaco sem distorcer */
+  aspect-ratio: 1 / 1; /* sempre quadrado */
+  object-fit: cover; /* corta sem distorcer */
+  object-position: center; /* centraliza o corte */
   background-color: var(--fundo-secao);
-
-  /* Placeholder quando nao tem imagem */
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 48px;     /* emoji de placeholder */
+  font-size: 48px;
 }
 
 /* Conteudo do card abaixo da imagem */
 .produto-info {
   padding: var(--espaco-md);
-  flex: 1;             /* cresce para empurrar botao ao fundo */
+  flex: 1; /* cresce para empurrar botao ao fundo */
   display: flex;
   flex-direction: column;
 }
