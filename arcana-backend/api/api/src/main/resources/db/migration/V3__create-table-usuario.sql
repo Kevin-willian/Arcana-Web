@@ -1,0 +1,16 @@
+CREATE TABLE usuario (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    sobrenome VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    rua VARCHAR(200),
+    numero VARCHAR(20),
+    complemento VARCHAR(120),
+    bairro VARCHAR(100),
+    cidade VARCHAR(100),
+    uf VARCHAR(2),
+    cep VARCHAR(9),
+    ativo BOOLEAN NOT NULL DEFAULT TRUE,
+    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
+)
