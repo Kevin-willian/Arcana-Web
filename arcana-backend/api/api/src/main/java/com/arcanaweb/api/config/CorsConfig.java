@@ -10,7 +10,8 @@ public class CorsConfig implements WebMvcConfigurer { // WebMvcConfigurer é uma
     @Override
     public void addCorsMappings(CorsRegistry registro){ // metodo da interface q estamos definindo as regras
         registro.addMapping("/api/**")                  // aplicar regra a todas as rotas q começam com api
-                .allowedOrigins("http://localhost:5173")          // so permite requisições vinda desta url
+                .allowedOrigins("http://localhost:5173",
+                        "https://ruined-tidings-boat.ngrok-free.dev")          // so permite requisições vinda desta url
                 .allowedMethods("GET","POST","PUT","DELETE")      // os tipos de metodos q nosas api trabalha
                 .allowedHeaders("*");                             // permite qualquer cabeçalho http
     }
