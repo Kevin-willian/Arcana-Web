@@ -36,7 +36,7 @@ public class UsuarioController {
 
     @PostMapping("/cadastro1/teste")
     @Transactional
-    public void cadastrar(@RequestBody @Valid DadosCadastroUsuario dados){
+    public void cadastrarTeste(@RequestBody @Valid DadosCadastroUsuario dados){
         if (repository.findByEmail(dados.email()).isPresent()){
             return ResponseEntity.body("Email já cadastrado");
         }
