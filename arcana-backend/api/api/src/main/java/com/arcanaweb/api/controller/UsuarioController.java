@@ -1,6 +1,8 @@
 package com.arcanaweb.api.controller;
 
 import com.arcanaweb.api.dto.DadosCadastroUsuario;
+import com.arcanaweb.api.dto.DadosLoginUsuario;
+import com.arcanaweb.api.dto.DadosRespostaUsuario;
 import com.arcanaweb.api.model.Usuario;
 import com.arcanaweb.api.repository.UsuarioRepository;
 import jakarta.validation.Valid;
@@ -24,25 +26,31 @@ public class UsuarioController {
 
     @PostMapping("/cadastro")
     @Transactional
-    public void cadastrar(@RequestBody @Valid DadosCadastroUsuario dados){
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroUsuario dados){
 
         if (repository.findByEmail(dados.email()).isPresent()){
-            return; // esse if verifica no cadastro se ja exite o email no banco de dados se não tiver ele retorna true e continua o fluxo
+            return ResponseEntity.badRequest().body("Email já cadastrado"); // esse if verifica no cadastro se ja exite o email no banco de dados se não tiver ele retorna true e continua o fluxo
         }
         var usuario = new Usuario(dados);
         usuario.setSenha(encoder.encode(dados.senha()));
         repository.save(usuario);
+        return ResponseEntity.ok().build();
     }
+    @PostMapping("/login")
+    public ResponseEntity login (@RequestBody @Valid DadosLoginUsuario dados){
+        var usuario = repository.findByEmail(dados.email()); //busca usuario pelo email
 
-    @PostMapping("/cadastro1/teste")
-    @Transactional
-    public void cadastrar(@RequestBody @Valid DadosCadastroUsuario dados){
-        if (repository.findByEmail(dados.email()).isPresent()){
-            return ResponseEntity.body("Email já cadastrado");
+        if (usuario.isEmpty()){ // retorna true se não encontrou ninguem
+            return ResponseEntity.badRequest().body("Email não encontrado");
         }
 
-        var usuario = new Usuario(dados);
-        usuario.setSenha(encoder.encode(dados.senha()));
-        repository.save(usuario);
+        if (!encoder.matches(dados.senha(),usuario.get().getSenha())){ // compara a senha com o hash do banco. usuario get pega o usuario dentro do optional
+            //com getsenha, pega  asenha criptografada do banco confere, se as senhas não batem retorna 400
+            return ResponseEntity.badRequest().body("Senha incorreta");
+        }
+
+        return ResponseEntity.ok(new DadosRespostaUsuario(usuario.get())); // se passou pelas duas verificações login correto, e retorna 200
+
     }
+
 }
