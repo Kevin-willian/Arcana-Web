@@ -1,0 +1,325 @@
+/* ============================================================
+   Home.css — pasta: src/styles/
+   Estilos exclusivos da pagina Home.
+   Todas as cores vem das variaveis do index.css.
+   ============================================================ */
+
+/* ---- HERO ------------------------------------------------- */
+.hero {
+  padding: var(--espaco-2xl) var(--espaco-xl) var(--espaco-xl);
+  text-align: center;
+  border-bottom: 1px solid var(--borda-sutil);
+  position: relative;  /* necessario para o ::before funcionar */
+  overflow: hidden;    /* esconde o gradiente que sair do elemento */
+}
+
+/* Gradiente decorativo no fundo do hero */
+/* ::before cria um elemento "fantasma" atras do conteudo */
+.hero::before {
+  content: '';          /* obrigatorio para pseudoelementos aparecerem */
+  position: absolute;
+  inset: 0;             /* ocupa todo o espaco do .hero */
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 0%,
+    rgba(61, 0, 32, 0.4) 0%,   /* var(--fundo-acento) com opacidade */
+    transparent 70%
+  );
+  pointer-events: none; /* nao interfere nos cliques */
+}
+
+/* Chip de categoria: "BRUXA · FEITICEIRA · ORACULISTA" */
+.hero-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espaco-xs);
+  border: 1px solid var(--borda-acento);
+  padding: 5px 18px;
+  border-radius: var(--radius-pill);
+  font-size: var(--tamanho-xs);
+  color: var(--texto-chip);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: var(--espaco-md);
+}
+
+/* Ponto dourado decorativo dentro do chip */
+.hero-chip-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background-color: var(--cor-destaque);
+}
+
+/* Titulo principal com fonte cursiva */
+.hero-title {
+  font-family: var(--fonte-display);
+  font-size: var(--tamanho-hero);
+  color: var(--texto-principal);
+  font-weight: normal;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+/* "por Selene" abaixo do titulo */
+.hero-by {
+  font-size: var(--tamanho-xs);
+  color: var(--texto-sutil);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+/* Descricao do hero */
+.hero-sub {
+  font-size: var(--tamanho-lg);
+  color: var(--texto-secundario);
+  line-height: 1.9;
+  max-width: 400px;
+  margin: 0 auto 28px; /* centraliza horizontalmente */
+}
+
+/* ---- SECOES GERAIS --------------------------------------- */
+
+/* Container padrao de cada secao */
+.section {
+  padding: var(--espaco-xl);
+  border-bottom: 1px solid var(--borda-sutil);
+}
+
+/* Tag de titulo da secao: "QUEM SOU EU", "METODOS", etc */
+.section-tag {
+  display: inline-block;
+  border: 1px solid var(--borda-acento);
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  font-size: var(--tamanho-xs);
+  color: var(--texto-sutil);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: var(--espaco-md);
+}
+
+/* ---- QUEM SOU EU ----------------------------------------- */
+
+/* Texto de apresentacao da Selene */
+.quem-body {
+  font-size: var(--tamanho-lg);
+  color: var(--texto-medio);
+  line-height: 1.9;
+  margin-bottom: var(--espaco-md);
+  max-width: 600px;
+}
+
+/* Nome "Selene" em dourado dentro do texto */
+.quem-body span {
+  color: var(--cor-destaque);
+}
+
+/* Citacao com linha vertical na esquerda */
+.quem-quote {
+  font-family: var(--fonte-display);
+  font-size: var(--tamanho-xl);
+  color: var(--texto-medio);
+  border-left: 2px solid var(--borda-acento);
+  padding-left: 18px;
+  margin-bottom: var(--espaco-md);
+  line-height: 1.6;
+}
+
+/* Texto complementar abaixo da citacao */
+.quem-footer {
+  font-size: var(--tamanho-md);
+  color: var(--texto-sutil);
+  line-height: 1.8;
+}
+
+/* ---- AVISOS ---------------------------------------------- */
+
+/* Card de cada aviso */
+.aviso {
+  background-color: var(--fundo-card);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  display: flex;         /* icone e texto lado a lado */
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: var(--espaco-sm);
+}
+
+/* Icone circular do aviso */
+.aviso-ico {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--borda-acento);
+  flex-shrink: 0;        /* nao encolhe quando o texto e longo */
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ponto interno do icone */
+.aviso-ico-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-pill);
+  background-color: var(--fundo-acento);
+}
+
+/* Titulo do aviso em dourado */
+.aviso-title {
+  font-size: var(--tamanho-md);
+  color: var(--cor-destaque);
+  margin-bottom: 4px;
+}
+
+/* Descricao do aviso */
+.aviso-desc {
+  font-size: var(--tamanho-sm);
+  color: var(--texto-sutil);
+  line-height: 1.7;
+}
+
+/* Aviso critico (disclaimer) com fundo e borda avermelhados */
+.aviso-warn {
+  background-color: var(--fundo-aviso-danger);
+  border: 1px solid var(--borda-danger);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+}
+
+.aviso-warn p {
+  font-size: var(--tamanho-sm);
+  color: var(--texto-danger);
+  line-height: 1.8;
+}
+
+/* ---- METODOS --------------------------------------------- */
+
+/* Cabecalho da secao: tag e contador lado a lado */
+.metodos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--espaco-md);
+}
+
+/* Contador "4 consultas disponiveis" */
+.metodos-count {
+  font-size: var(--tamanho-sm);
+  color: var(--texto-sutil);
+}
+
+/* Grid de 2 colunas no desktop */
+/* repeat(2, 1fr) = 2 colunas de tamanho igual */
+.metodos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--espaco-md);
+}
+
+/* Card de cada metodo */
+.metodo {
+  background-color: var(--fundo-card);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  display: flex;             /* flex coluna para botao ficar no fundo */
+  flex-direction: column;
+  transition: border-color var(--transicao);
+}
+
+/* Ao passar o mouse: borda fica mais visivel */
+.metodo:hover {
+  border-color: var(--borda-acento);
+}
+
+/* Cabecalho do card: nome e preco lado a lado */
+.metodo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--espaco-xs);
+}
+
+/* Nome do metodo em fonte cursiva */
+.metodo-name {
+  font-family: var(--fonte-display);
+  font-size: var(--tamanho-2xl);
+  color: var(--texto-principal);
+  font-weight: normal;
+}
+
+/* Preco em dourado */
+.metodo-price {
+  font-size: var(--tamanho-lg);
+  color: var(--cor-destaque);
+  white-space: nowrap; /* nao quebra em duas linhas */
+}
+
+/* Container das tags do metodo */
+.metodo-tags {
+  display: flex;
+  gap: var(--espaco-xs);
+  flex-wrap: wrap;           /* quebra linha se nao couber */
+  margin-bottom: var(--espaco-sm);
+}
+
+/* Cada tag individual */
+.metodo-tag {
+  background-color: var(--fundo-secao);
+  border: 1px solid var(--borda-sutil);
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  font-size: var(--tamanho-xs);
+  color: var(--texto-tag);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Descricao do metodo */
+/* flex-grow: 1 faz a descricao crescer e empurrar o botao para baixo */
+/* Isso deixa todos os botoes alinhados na mesma altura */
+.metodo-desc {
+  font-size: var(--tamanho-md);
+  color: var(--texto-sutil);
+  line-height: 1.8;
+  margin-bottom: var(--espaco-md);
+  flex-grow: 1;
+}
+
+/* ---- FOOTER ---------------------------------------------- */
+.home-footer {
+  padding: var(--espaco-lg) var(--espaco-xl);
+  text-align: center;
+  border-top: 1px solid var(--borda-sutil);
+}
+
+.home-footer p {
+  font-size: var(--tamanho-sm);
+  color: var(--texto-sutil);
+  letter-spacing: 1px;
+}
+
+/* Nome "Diabrera" em dourado no footer */
+.home-footer span {
+  color: var(--cor-destaque);
+}
+
+/* ---- RESPONSIVIDADE -------------------------------------- */
+/* Aplica esses estilos somente em telas com ate 768px */
+@media (max-width: 768px) {
+  .hero      { padding: 40px var(--espaco-md) 32px; }
+  .hero-title { font-size: 48px; }
+  .hero-sub  { font-size: var(--tamanho-md); }
+  .section   { padding: 28px var(--espaco-md); }
+  .metodo-name { font-size: var(--tamanho-xl); }
+  .home-footer { padding: var(--espaco-lg) var(--espaco-md); }
+
+  /* Mobile: volta para 1 coluna */
+  .metodos-grid {
+    grid-template-columns: 1fr;
+  }
+}

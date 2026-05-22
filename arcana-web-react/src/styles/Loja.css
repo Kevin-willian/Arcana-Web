@@ -1,0 +1,353 @@
+/* ============================================================
+   Loja.css — pasta: src/styles/
+   Estilos da pagina de Loja de Produtos.
+   CRIA este arquivo.
+
+   ACESSIBILIDADE aplicada:
+   - Contraste de cores seguindo WCAG AA (minimo 4.5:1)
+   - Textos alternativos (alt) nos produtos via HTML
+   - Tamanhos de fonte legiveis (minimo 12px)
+   - Estados de foco visiveis para navegacao por teclado
+   - Targets de clique com pelo menos 44x44px
+   ============================================================ */
+
+/* ---- CABECALHO DA LOJA ----------------------------------- */
+.loja-header {
+  padding: var(--espaco-xl) var(--espaco-xl) 0;
+  border-bottom: 1px solid var(--borda-sutil);
+}
+
+/* Titulo da secao */
+.loja-titulo {
+  font-family: var(--fonte-corpo);
+  font-size: 40px;
+  color: var(--texto-principal);
+  font-weight: normal;
+  margin-bottom: var(--espaco-xs);
+}
+
+/* Subtitulo descritivo */
+.loja-subtitulo {
+  font-size: var(--tamanho-md);
+  color: var(--texto-secundario);
+  margin-bottom: var(--espaco-xl);
+  line-height: 1.7;
+}
+
+/* ---- BARRA DE BUSCA -------------------------------------- */
+.loja-busca-wrap {
+  margin-bottom: var(--espaco-lg);
+}
+
+/* Input de busca de produto */
+.loja-busca {
+  width: 100%;
+  max-width: 480px;
+  background-color: var(--fundo-card);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--radius-sm);
+  padding: 12px var(--espaco-md);
+  color: var(--texto-principal);
+  font-size: var(--tamanho-md);
+  font-family: var(--fonte-corpo);
+  outline: none;
+  transition: border-color var(--transicao);
+}
+
+.loja-busca:focus {
+  border-color: var(--borda-acento);
+  /* outline visivel para acessibilidade por teclado */
+  outline: 2px solid var(--cor-destaque);
+  outline-offset: 2px;
+}
+
+.loja-busca::placeholder {
+  color: var(--texto-sutil);
+  font-size: var(--tamanho-md); /* placeholder legivel */
+}
+
+/* ---- FILTRO DE CATEGORIAS -------------------------------- */
+/* Container horizontal com scroll no mobile */
+.loja-categorias {
+  display: flex;
+  gap: var(--espaco-sm);
+  flex-wrap: wrap;
+  padding-bottom: var(--espaco-lg);
+}
+
+/* Cada botao de categoria */
+.categoria-btn {
+  padding: 8px 18px;
+  border: 1px solid var(--borda-acento);
+  border-radius: var(--radius-pill);
+  font-family: var(--fonte-corpo);
+  font-size: var(--tamanho-sm);
+  color: var(--texto-secundario);
+  background: none;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all var(--transicao);
+  /* Minimo de 44px de altura para acessibilidade */
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.categoria-btn:hover {
+  color: var(--texto-principal);
+  border-color: var(--texto-secundario);
+}
+
+/* Categoria selecionada */
+.categoria-btn.ativo {
+  background-color: var(--cor-primaria);
+  border-color: var(--cor-destaque);
+  color: var(--cor-destaque);
+}
+
+/* Foco visivel para navegacao por teclado */
+.categoria-btn:focus-visible {
+  outline: 2px solid var(--cor-destaque);
+  outline-offset: 2px;
+}
+
+/* ---- CONTADOR DE RESULTADOS ------------------------------ */
+.loja-contador {
+  font-size: var(--tamanho-sm);
+  color: var(--texto-sutil);
+  padding: var(--espaco-md) var(--espaco-xl);
+}
+
+/* ---- GRID DE PRODUTOS ------------------------------------ */
+/* 4 colunas no desktop, responsivo */
+.produtos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--espaco-lg);
+  padding: 0 var(--espaco-xl) var(--espaco-xl);
+}
+
+/* ---- CARD DE PRODUTO ------------------------------------- */
+.produto-card {
+  background-color: var(--fundo-card);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition:
+    border-color var(--transicao),
+    transform var(--transicao);
+  cursor: pointer;
+}
+
+.produto-card:hover {
+  border-color: var(--borda-acento);
+  /* Leve elevacao no hover */
+  transform: translateY(-2px);
+}
+
+/* Foco visivel no card para acessibilidade */
+.produto-card:focus-within {
+  outline: 2px solid var(--cor-destaque);
+  outline-offset: 2px;
+}
+
+/* Imagem do produto */
+.produto-imagem {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* sempre quadrado */
+  object-fit: cover; /* corta sem distorcer */
+  object-position: center; /* centraliza o corte */
+  background-color: var(--fundo-secao);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
+
+/* Conteudo do card abaixo da imagem */
+.produto-info {
+  padding: var(--espaco-md);
+  flex: 1; /* cresce para empurrar botao ao fundo */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Nome do produto */
+.produto-nome {
+  font-size: var(--tamanho-md);
+  color: var(--texto-principal);
+  font-family: var(--fonte-corpo) !important;
+  margin-bottom: var(--espaco-xs);
+  line-height: 1.4;
+}
+
+/* Descricao curta */
+.produto-descricao {
+  font-size: var(--tamanho-sm);
+  color: var(--texto-secundario);
+  line-height: 1.6;
+  margin-bottom: var(--espaco-sm);
+  flex: 1;
+}
+
+/* Linha de preco e botao */
+.produto-rodape {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--espaco-sm);
+}
+
+/* Preco em dourado */
+.produto-preco {
+  font-size: var(--tamanho-lg);
+  color: var(--cor-destaque);
+  font-weight: bold;
+}
+
+/* Botao de adicionar ao carrinho */
+.produto-btn {
+  background-color: var(--cor-primaria);
+  color: var(--texto-principal);
+  border: 1px solid var(--borda-acento);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  font-size: var(--tamanho-xs);
+  font-family: var(--fonte-corpo);
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all var(--transicao);
+  /* Minimo 44px de altura para acessibilidade */
+  min-height: 44px;
+}
+
+.produto-btn:hover {
+  background-color: var(--cor-destaque);
+  border-color: var(--cor-destaque);
+  color: var(--fundo-pagina);
+}
+
+.produto-btn:focus-visible {
+  outline: 2px solid var(--cor-destaque);
+  outline-offset: 2px;
+}
+
+/* Badge de categoria no canto do card */
+.produto-categoria {
+  display: inline-block;
+  background-color: var(--fundo-secao);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  font-size: var(--tamanho-xs);
+  color: var(--texto-tag);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: var(--espaco-sm);
+}
+
+/* Mensagem quando nao ha produtos na categoria */
+.loja-vazia {
+  grid-column: 1 / -1; /* ocupa todas as colunas */
+  text-align: center;
+  padding: var(--espaco-2xl);
+  color: var(--texto-sutil);
+  font-size: var(--tamanho-lg);
+}
+
+/* ---- RESPONSIVIDADE -------------------------------------- */
+@media (max-width: 1024px) {
+  .produtos-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .loja-header {
+    padding: var(--espaco-md);
+  }
+
+  .loja-titulo {
+    font-size: 30px;
+  }
+
+  .produtos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--espaco-md);
+    padding: 0 var(--espaco-md) var(--espaco-md);
+  }
+
+  .loja-contador {
+    padding: var(--espaco-sm) var(--espaco-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .produtos-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- DOIS BOTOES: Comprar e Adicionar ao carrinho -------- */
+.produto-preco-wrap {
+  margin-bottom: var(--espaco-sm);
+}
+
+.produto-botoes {
+  display: flex;
+  gap: var(--espaco-sm);
+  align-items: center;
+  margin-top: auto;
+}
+
+/* Botao Comprar: principal, mais largo */
+.produto-btn-comprar {
+  flex: 1;
+  background-color: var(--cor-primaria);
+  color: var(--texto-principal);
+  border: 1px solid var(--borda-acento);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: var(--tamanho-sm);
+  font-family: var(--fonte-corpo);
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all var(--transicao);
+  min-height: 44px;
+}
+
+.produto-btn-comprar:hover {
+  background-color: var(--cor-destaque);
+  border-color: var(--cor-destaque);
+  color: var(--fundo-pagina);
+}
+
+/* Botao carrinho: icone quadrado */
+.produto-btn-carrinho {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  background-color: var(--fundo-secao);
+  border: 1px solid var(--borda-acento);
+  border-radius: var(--radius-sm);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transicao);
+}
+
+.produto-btn-carrinho:hover {
+  background-color: var(--borda-acento);
+}
+
+/* Feedback visual ao adicionar */
+.produto-btn-carrinho.adicionado {
+  background-color: var(--cor-sucesso);
+  border-color: var(--cor-sucesso);
+  color: white;
+}

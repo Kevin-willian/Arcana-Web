@@ -1,0 +1,84 @@
+/* ============================================================
+   Pedidos.css — Acompanhamento de pedidos.
+   Status atualizado pelo sistema de frete via Docker.
+   ============================================================ */
+
+.pedidos-page { padding: var(--espaco-xl); }
+.pedidos-titulo { font-family: var(--fonte-corpo); font-size: 40px; color: var(--texto-principal); font-weight: normal; margin-bottom: var(--espaco-xs); }
+.pedidos-subtitulo { font-size: var(--tamanho-md); color: var(--texto-secundario); margin-bottom: var(--espaco-xl); }
+
+.pedidos-filtros { display: flex; gap: var(--espaco-sm); flex-wrap: wrap; margin-bottom: var(--espaco-xl); }
+
+.filtro-btn { padding: 8px 18px; border: 1px solid var(--borda-acento); border-radius: var(--radius-pill); font-size: var(--tamanho-sm); color: var(--texto-secundario); cursor: pointer; transition: all var(--transicao); min-height: 44px; }
+.filtro-btn:hover { color: var(--texto-principal); border-color: var(--texto-secundario); }
+.filtro-btn.ativo { background: var(--cor-primaria); border-color: var(--cor-destaque); color: var(--cor-destaque); }
+.filtro-btn:focus-visible { outline: 2px solid var(--cor-destaque); outline-offset: 2px; }
+
+.pedidos-vazio { text-align: center; padding: var(--espaco-2xl); }
+.pedidos-vazio-emoji { font-size: 64px; margin-bottom: var(--espaco-md); display: block; }
+.pedidos-vazio-titulo { font-size: var(--tamanho-xl); font-family: var(--fonte-display); color: var(--texto-secundario); margin-bottom: var(--espaco-sm); }
+.pedidos-vazio-texto { font-size: var(--tamanho-md); color: var(--texto-sutil); margin-bottom: var(--espaco-lg); }
+.pedidos-vazio-btn { background: var(--cor-primaria); color: var(--texto-principal); border: 1px solid var(--borda-acento); border-radius: var(--radius-sm); padding: 12px 28px; font-size: var(--tamanho-sm); letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: all var(--transicao); min-height: 44px; }
+.pedidos-vazio-btn:hover { background: var(--cor-destaque); border-color: var(--cor-destaque); color: var(--fundo-pagina); }
+
+.pedidos-lista { display: flex; flex-direction: column; gap: var(--espaco-lg); }
+
+.pedido-card { background: var(--fundo-card); border: 1px solid var(--borda-sutil); border-radius: var(--radius-lg); overflow: hidden; }
+
+.pedido-header { display: flex; justify-content: space-between; align-items: center; padding: var(--espaco-md) var(--espaco-lg); border-bottom: 1px solid var(--borda-sutil); cursor: pointer; flex-wrap: wrap; gap: var(--espaco-sm); transition: background var(--transicao); }
+.pedido-header:hover { background: var(--fundo-secao); }
+
+.pedido-numero { font-size: var(--tamanho-sm); color: var(--texto-sutil); }
+.pedido-numero strong { color: var(--cor-destaque); font-size: var(--tamanho-md); }
+.pedido-data { font-size: var(--tamanho-sm); color: var(--texto-sutil); margin-top: 2px; }
+
+.pedido-badge { padding: 6px 16px; border-radius: var(--radius-pill); font-size: var(--tamanho-sm); letter-spacing: 1px; text-transform: uppercase; font-weight: bold; white-space: nowrap; }
+
+.badge-PENDENTE   { background: rgba(217,119,6,0.15);   color: var(--cor-alerta);   border: 1px solid var(--cor-alerta); }
+.badge-PREPARANDO { background: rgba(201,169,110,0.15); color: var(--cor-destaque); border: 1px solid var(--cor-destaque); }
+.badge-ENVIADO    { background: rgba(99,102,241,0.15);  color: #818cf8;             border: 1px solid #818cf8; }
+.badge-SAINDO     { background: rgba(99,102,241,0.2);   color: #a5b4fc;             border: 1px solid #a5b4fc; }
+.badge-ENTREGUE   { background: rgba(22,163,74,0.15);   color: var(--cor-sucesso);  border: 1px solid var(--cor-sucesso); }
+.badge-CANCELADO  { background: rgba(220,38,38,0.15);   color: var(--cor-erro);     border: 1px solid var(--cor-erro); }
+
+/* Descricao do status — muda conforme o frete atualiza */
+.pedido-status-desc {
+  padding: var(--espaco-md) var(--espaco-lg);
+  background: var(--fundo-secao);
+  border-bottom: 1px solid var(--borda-sutil);
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-md);
+}
+
+.status-icone { font-size: 28px; flex-shrink: 0; }
+.status-titulo { font-size: var(--tamanho-md); color: var(--texto-principal); margin-bottom: 4px; }
+.status-desc { font-size: var(--tamanho-sm); color: var(--texto-secundario); line-height: 1.6; }
+
+/* Indicador "ao vivo" — piscando quando pedido esta ativo */
+.status-live { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: var(--tamanho-xs); color: var(--cor-sucesso); flex-shrink: 0; }
+.live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cor-sucesso); animation: pulse 2s infinite; }
+
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.pedido-itens { padding: var(--espaco-md) var(--espaco-lg); border-bottom: 1px solid var(--borda-sutil); }
+.pedido-itens-label { font-size: var(--tamanho-sm); color: var(--texto-sutil); letter-spacing: 2px; text-transform: uppercase; margin-bottom: var(--espaco-md); }
+
+.pedido-item { display: flex; justify-content: space-between; align-items: center; padding: var(--espaco-sm) 0; border-bottom: 1px solid var(--borda-sutil); }
+.pedido-item:last-child { border-bottom: none; }
+.pedido-item-info { display: flex; align-items: center; gap: var(--espaco-md); }
+.pedido-item-thumb { width: 44px; height: 44px; border-radius: var(--radius-sm); background: var(--fundo-secao); border: 1px solid var(--borda-sutil); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.pedido-item-nome { font-size: var(--tamanho-md); color: var(--texto-principal); }
+.pedido-item-qtd { font-size: var(--tamanho-sm); color: var(--texto-sutil); }
+.pedido-item-preco { font-size: var(--tamanho-md); color: var(--cor-destaque); white-space: nowrap; }
+
+.pedido-total { display: flex; justify-content: space-between; align-items: center; padding: var(--espaco-md) var(--espaco-lg); background: var(--fundo-secao); }
+.pedido-total-label { font-size: var(--tamanho-md); color: var(--texto-secundario); text-transform: uppercase; letter-spacing: 1px; }
+.pedido-total-valor { font-size: var(--tamanho-xl); color: var(--cor-destaque); font-weight: bold; }
+
+@media (max-width: 768px) {
+  .pedidos-page { padding: var(--espaco-md); }
+  .pedidos-titulo { font-size: 30px; }
+  .pedido-header { flex-direction: column; align-items: flex-start; }
+  .status-live { margin-left: 0; }
+}

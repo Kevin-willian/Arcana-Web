@@ -1,0 +1,237 @@
+/* ============================================================
+   Login.css — pasta: src/styles/
+   Estilos da pagina de Login e Cadastro.
+   CRIA este arquivo.
+   ============================================================ */
+
+/* ---- Container principal da pagina ----------------------- */
+/* Centraliza o card de login vertical e horizontalmente */
+.login-page {
+  min-height: calc(100vh - 56px); /* desconta a altura da navbar */
+  display: flex;
+  align-items: center;            /* centraliza verticalmente */
+  justify-content: center;        /* centraliza horizontalmente */
+  padding: var(--espaco-xl);
+  background-color: var(--fundo-pagina);
+
+  /* Gradiente decorativo de fundo */
+  background-image: radial-gradient(
+    ellipse 80% 60% at 50% 0%,
+    rgba(61, 0, 32, 0.3) 0%,
+    transparent 70%
+  );
+}
+
+/* ---- Card central do formulario -------------------------- */
+/* O card branco/escuro que contem o formulario */
+.login-card {
+  width: 100%;
+  max-width: 420px;               /* largura maxima em desktop */
+  background-color: var(--fundo-card);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--radius-lg);
+  overflow: hidden;               /* esconde bordas dos filhos */
+}
+
+/* ---- Cabecalho do card: logo e titulo -------------------- */
+.login-header {
+  padding: var(--espaco-xl) var(--espaco-xl) var(--espaco-lg);
+  text-align: center;
+  border-bottom: 1px solid var(--borda-sutil);
+}
+
+/* Logo/nome do sistema */
+.login-logo {
+  font-family: var(--fonte-display);
+  font-size: 32px;
+  color: var(--cor-destaque);
+  font-weight: normal;
+  display: block;
+  margin-bottom: var(--espaco-xs);
+}
+
+/* Subtitulo abaixo do logo */
+.login-subtitle {
+  font-size: var(--tamanho-sm);
+  color: var(--texto-sutil);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* ---- Abas: "ENTRAR" e "CADASTRAR" ----------------------- */
+/* Container das abas */
+.login-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* duas colunas de tamanho igual */
+  border-bottom: 1px solid var(--borda-sutil);
+}
+
+/* Cada aba individualmente */
+.login-tab {
+  padding: var(--espaco-md);
+  font-family: var(--fonte-corpo);
+  font-size: var(--tamanho-xs);
+  color: var(--texto-sutil);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent; /* borda invisivel por padrao */
+  transition: all var(--transicao);
+}
+
+.login-tab:hover {
+  color: var(--texto-secundario);
+}
+
+/* Aba ativa: texto dourado e linha dourada embaixo */
+.login-tab.ativo {
+  color: var(--cor-destaque);
+  border-bottom-color: var(--cor-destaque);
+  background-color: var(--fundo-secao);
+}
+
+/* ---- Corpo do formulario --------------------------------- */
+.login-body {
+  padding: var(--espaco-xl);
+}
+
+/* ---- Grupo de campo: label + input ----------------------- */
+.campo-grupo {
+  margin-bottom: var(--espaco-md);
+}
+
+/* Label do campo */
+.campo-label {
+  display: block;               /* ocupa a linha toda */
+  font-size: var(--tamanho-xs);
+  color: var(--texto-sutil);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: var(--espaco-xs);
+}
+
+/* Input do campo */
+.campo-input {
+  width: 100%;
+  background-color: var(--fundo-pagina);
+  border: 1px solid var(--borda-sutil);
+  border-radius: var(--radius-sm);
+  padding: 10px var(--espaco-md);
+  color: var(--texto-principal);
+  font-size: var(--tamanho-md);
+  font-family: var(--fonte-corpo);
+  outline: none;                /* remove borda azul do navegador */
+  transition: border-color var(--transicao);
+}
+
+/* Input em foco: borda bordo aparece */
+.campo-input:focus {
+  border-color: var(--borda-acento);
+}
+
+/* Input com erro: borda vermelha */
+.campo-input.erro {
+  border-color: var(--cor-erro);
+}
+
+/* Placeholder (texto de exemplo dentro do input) */
+.campo-input::placeholder {
+  color: var(--texto-sutil);
+}
+
+/* Mensagem de erro abaixo do input */
+.campo-erro {
+  font-size: var(--tamanho-xs);
+  color: var(--cor-erro);
+  margin-top: var(--espaco-xs);
+  display: block;
+}
+
+/* ---- Linha de dois campos lado a lado (nome + sobrenome) -- */
+.campos-duplos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espaco-md);
+}
+
+/* ---- Botao principal do formulario ----------------------- */
+.login-btn {
+  width: 100%;
+  background-color: var(--cor-primaria);
+  color: var(--texto-principal);
+  border: 1px solid var(--borda-acento);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-family: var(--fonte-corpo);
+  font-size: var(--tamanho-sm);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: var(--espaco-md);
+  transition: all var(--transicao);
+}
+
+.login-btn:hover {
+  background-color: var(--cor-destaque);
+  border-color: var(--cor-destaque);
+  color: var(--fundo-pagina);
+}
+
+/* ---- Divisor "ou" entre formulario e link alternativo ---- */
+.login-divisor {
+  text-align: center;
+  font-size: var(--tamanho-xs);
+  color: var(--borda-sutil);
+  margin: var(--espaco-md) 0;
+  position: relative;
+}
+
+/* Linha horizontal do divisor */
+.login-divisor::before,
+.login-divisor::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background-color: var(--borda-sutil);
+}
+
+.login-divisor::before { left: 0; }
+.login-divisor::after  { right: 0; }
+
+/* ---- Rodape do card: link para trocar de aba ------------- */
+.login-footer {
+  text-align: center;
+  margin-top: var(--espaco-lg);
+  font-size: var(--tamanho-sm);
+  color: var(--texto-sutil);
+}
+
+/* Link em dourado dentro do rodape */
+.login-footer span {
+  color: var(--cor-destaque);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.login-footer span:hover {
+  color: var(--texto-principal);
+}
+
+/* ---- RESPONSIVIDADE -------------------------------------- */
+@media (max-width: 768px) {
+  .login-page {
+    padding: var(--espaco-md);
+    align-items: flex-start;
+    padding-top: var(--espaco-xl);
+  }
+
+  /* Em celulares, os dois campos ficam em coluna */
+  .campos-duplos {
+    grid-template-columns: 1fr;
+  }
+}
