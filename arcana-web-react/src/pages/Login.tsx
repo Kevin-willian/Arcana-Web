@@ -1,8 +1,3 @@
-// ============================================================
-// Login.tsx — Login e Cadastro com validacao completa.
-// Pronto para conectar ao backend Spring Boot via fetch().
-// ============================================================
-
 import { useState } from 'react'
 type ErrosFormulario = { [campo: string]: string }
 import '../styles/Login.css'
@@ -11,17 +6,14 @@ type AbaAtiva = 'entrar' | 'cadastrar'
 
 interface LoginProps {
   setPagina: (pagina: string) => void
-  onLogin?: (usuario: { nome: string; sobrenome: string; email: string }) => void
+  onLogin?: (usuario: { id: number; nome: string; sobrenome: string; email: string }) => void
 }
 
 interface DadosLogin { email: string; senha: string }
 interface DadosCadastro { nome: string; sobrenome: string; email: string; senha: string; confirmarSenha: string }
 
-// ---- Funcoes de validacao --------------------------------
-// Cada funcao retorna uma mensagem de erro ou string vazia
 function validarEmail(email: string): string {
   if (!email.trim()) return 'E-mail e obrigatorio.'
-  // Regex simples de email: tem @ e ponto depois
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'E-mail invalido.'
   return ''
 }
@@ -42,18 +34,14 @@ function Login({ setPagina, onLogin }: LoginProps) {
 
   const [abaAtiva, setAbaAtiva] = useState<AbaAtiva>('entrar')
   const [carregando, setCarregando] = useState<boolean>(false)
-
   const [dadosLogin, setDadosLogin] = useState<DadosLogin>({ email: '', senha: '' })
   const [dadosCadastro, setDadosCadastro] = useState<DadosCadastro>({ nome: '', sobrenome: '', email: '', senha: '', confirmarSenha: '' })
-
-  // Erros por campo
   const [errosLogin, setErrosLogin] = useState<ErrosFormulario>({})
   const [errosCadastro, setErrosCadastro] = useState<ErrosFormulario>({})
   const [erroGeral, setErroGeral] = useState<string>('')
 
   function atualizarLogin(campo: keyof DadosLogin, valor: string): void {
     setDadosLogin({ ...dadosLogin, [campo]: valor })
-    // Limpa o erro do campo ao digitar
     if (errosLogin[campo]) setErrosLogin({ ...errosLogin, [campo]: '' })
     setErroGeral('')
   }
@@ -64,44 +52,26 @@ function Login({ setPagina, onLogin }: LoginProps) {
     setErroGeral('')
   }
 
-  // ---- Valida e submete o login --------------------------
   async function submeterLogin(): Promise<void> {
-    // Valida todos os campos antes de enviar
     const novosErros: ErrosFormulario = {
       email: validarEmail(dadosLogin.email),
       senha: validarSenha(dadosLogin.senha),
     }
-
-    // Se algum campo tem erro, mostra e nao envia
-    if (Object.values(novosErros).some(e => e !== '')) {
-      setErrosLogin(novosErros)
-      return
-    }
-
+    if (Object.values(novosErros).some(e => e !== '')) { setErrosLogin(novosErros); return }
+    
+    // Login Conexão chamando a API
     setCarregando(true)
-
-    // Quando conectar ao Spring Boot, substitua por:
-    // const response = await fetch('/api/auth/login', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ email: dadosLogin.email, senha: dadosLogin.senha })
-    // })
-    // if (!response.ok) {
-    //   setErroGeral('Email ou senha incorretos.')
-    //   setCarregando(false)
-    //   return
-    // }
-    // const dados = await response.json()
-    // localStorage.setItem('token', dados.token) // guarda o JWT
-    // if (onLogin) onLogin(dados.usuario)
-
-    // Simulacao (remover quando integrar)
-    await new Promise(r => setTimeout(r, 800))
-    if (onLogin) onLogin({ nome: 'Usuario', sobrenome: 'Teste', email: dadosLogin.email })
+    const response = await fetch('http://localhost:8080/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: dadosLogin.email, senha: dadosLogin.senha })
+    })
+    if (!response.ok) { setErroGeral('Email ou senha incorretos.'); setCarregando(false); return }
+    const dados = await response.json()
+    if (onLogin) onLogin({ id: dados.id, nome: dados.nome, sobrenome: dados.sobrenome, email: dados.email })
     setCarregando(false)
   }
 
-  // ---- Valida e submete o cadastro -----------------------
   async function submeterCadastro(): Promise<void> {
     const novosErros: ErrosFormulario = {
       nome: validarNome(dadosCadastro.nome),
@@ -109,35 +79,16 @@ function Login({ setPagina, onLogin }: LoginProps) {
       senha: validarSenha(dadosCadastro.senha),
       confirmarSenha: dadosCadastro.senha !== dadosCadastro.confirmarSenha ? 'Senhas nao coincidem.' : '',
     }
-
-    if (Object.values(novosErros).some(e => e !== '')) {
-      setErrosCadastro(novosErros)
-      return
-    }
+    if (Object.values(novosErros).some(e => e !== '')) { setErrosCadastro(novosErros); return }
 
     setCarregando(true)
-
-    // Quando conectar ao Spring Boot, substitua por:
-    // const response = await fetch('/api/auth/cadastro', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     nome: dadosCadastro.nome,
-    //     sobrenome: dadosCadastro.sobrenome,
-    //     email: dadosCadastro.email,
-    //     senha: dadosCadastro.senha
-    //   })
-    // })
-    // if (!response.ok) {
-    //   setErroGeral('Este email ja esta em uso.')
-    //   setCarregando(false)
-    //   return
-    // }
-    // const dados = await response.json()
-    // if (onLogin) onLogin(dados.usuario)
-
-    await new Promise(r => setTimeout(r, 800))
-    if (onLogin) onLogin({ nome: dadosCadastro.nome, sobrenome: dadosCadastro.sobrenome, email: dadosCadastro.email })
+    const response = await fetch('http://localhost:8080/api/auth/cadastro', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome: dadosCadastro.nome, sobrenome: dadosCadastro.sobrenome, email: dadosCadastro.email, senha: dadosCadastro.senha })
+    })
+    if (!response.ok) { setErroGeral('Este email já está em uso.'); setCarregando(false); return }
+    if (onLogin) onLogin({ id: 0, nome: dadosCadastro.nome, sobrenome: dadosCadastro.sobrenome, email: dadosCadastro.email })
     setCarregando(false)
   }
 
@@ -157,10 +108,8 @@ function Login({ setPagina, onLogin }: LoginProps) {
 
         <div className="login-body">
 
-          {/* Erro geral (ex: email ja em uso) */}
           {erroGeral && <div className="campo-erro" style={{ marginBottom: '12px', fontSize: 'var(--tamanho-sm)' }} role="alert">❌ {erroGeral}</div>}
 
-          {/* ---- LOGIN ---- */}
           {abaAtiva === 'entrar' && (
             <>
               <div className="campo-grupo">
@@ -180,7 +129,6 @@ function Login({ setPagina, onLogin }: LoginProps) {
             </>
           )}
 
-          {/* ---- CADASTRO ---- */}
           {abaAtiva === 'cadastrar' && (
             <>
               <div className="campos-duplos">

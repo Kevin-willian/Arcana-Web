@@ -11,6 +11,7 @@ import { ShoppingCart, User, LogOut, Package } from 'lucide-react'
 import '../styles/Navbar.css'
 
 export interface Usuario {
+  id?: number
   nome: string
   sobrenome: string
   email: string

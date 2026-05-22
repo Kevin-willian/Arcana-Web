@@ -14,7 +14,7 @@ import '../styles/Pedidos.css'
 
 interface PedidosProps {
   setPagina: (pagina: string) => void
-  usuario: { nome: string; email: string } | null
+  usuario: { id?: number; nome: string; email: string } | null
 }
 
 // Configuracao de cada status: icone, titulo e descricao
@@ -61,17 +61,27 @@ function Pedidos({ setPagina, usuario }: PedidosProps) {
 
   // Polling: verifica atualizacoes de status a cada 30 segundos
   useEffect(() => {
-    async function buscarPedidos(): Promise<void> {
-      // Quando conectar ao Spring Boot, substitua por:
-      // const res = await fetch('/api/pedidos', { headers: { Authorization: `Bearer ${token}` } })
-      // const dados = await res.json()
-      // setPedidos(dados)
-      console.log('Polling ativo: verificando status dos pedidos...')
-    }
-    buscarPedidos()
-    const intervalo = setInterval(buscarPedidos, 30000) // 30 segundos
-    return () => clearInterval(intervalo) // limpa ao desmontar
-  }, [])
+  if (!usuario?.id) return
+
+  async function buscarPedidos(): Promise<void> {
+    const res = await fetch(`http://localhost:8080/api/pedidos?usuarioId=${usuario!.id}`)
+    const dados = await res.json()
+    setPedidos(dados.map((p: any) => ({
+      id: `#${p.id.toString(16).toUpperCase().padStart(6, '0')}`,
+      dataCriacao: new Date(p.dataCriacao).toLocaleDateString('pt-BR'),
+      status: p.status,
+      total: p.total,
+      itens: p.itens.map((item: any) => ({
+        produto: { id: item.nomeProduto, nome: item.nomeProduto, descricao: '', preco: item.precoUnitario, categoria: '', emoji: '' },
+        quantidade: item.quantidade
+      }))
+    })))
+  }
+
+  buscarPedidos()
+  const intervalo = setInterval(buscarPedidos, 30000)
+  return () => clearInterval(intervalo)
+}, [usuario?.id])
 
   const pedidosFiltrados = pedidos.filter(p => filtroAtivo === 'TODOS' || p.status === filtroAtivo)
 

@@ -1,9 +1,3 @@
-// ============================================================
-// Conta.tsx — Dados do usuario com endereco de entrega.
-// PUT /api/usuarios/me    -> atualiza dados
-// PUT /api/usuarios/senha -> atualiza senha
-// ============================================================
-
 import { useState } from 'react'
 import { Usuario, Endereco } from '../types.ts'
 import '../styles/Conta.css'
@@ -33,7 +27,6 @@ function Conta({ setPagina, usuario, onAtualizarUsuario, onLogout }: ContaProps)
   const [formDados, setFormDados] = useState({ nome: usuario.nome, sobrenome: usuario.sobrenome, email: usuario.email })
   const [formEndereco, setFormEndereco] = useState<Endereco>(enderecoInicial)
   const [formSenha, setFormSenha] = useState<FormSenha>({ senhaAtual: '', novaSenha: '', confirmarSenha: '' })
-
   const [msgDados, setMsgDados]       = useState<Mensagem | null>(null)
   const [msgEndereco, setMsgEndereco] = useState<Mensagem | null>(null)
   const [msgSenha, setMsgSenha]       = useState<Mensagem | null>(null)
@@ -43,22 +36,29 @@ function Conta({ setPagina, usuario, onAtualizarUsuario, onLogout }: ContaProps)
     const erroEmail = validarEmail(formDados.email)
     if (!formDados.nome.trim()) { setMsgDados({ tipo: 'erro', texto: 'Nome e obrigatorio.' }); return }
     if (erroEmail) { setMsgDados({ tipo: 'erro', texto: erroEmail }); return }
-
     setSalvando(true)
-    // PUT /api/usuarios/me
-    await new Promise(r => setTimeout(r, 800))
+    const response = await fetch('http://localhost:8080/api/usuarios/me', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: usuario.id, nome: formDados.nome, sobrenome: formDados.sobrenome, email: formDados.email })
+    })
+    if (!response.ok) { setMsgDados({ tipo: 'erro', texto: 'Erro ao salvar.' }); setSalvando(false); return }
     onAtualizarUsuario({ ...usuario, ...formDados })
     setMsgDados({ tipo: 'sucesso', texto: 'Dados atualizados!' })
     setSalvando(false)
   }
 
   async function salvarEndereco(): Promise<void> {
-    if (!formEndereco.rua.trim() || !formEndereco.numero.trim() || !formEndereco.cidade.trim()) {
-      setMsgEndereco({ tipo: 'erro', texto: 'Preencha rua, numero e cidade.' }); return
+    if (!formEndereco.rua.trim() || !formEndereco.cidade.trim()) {
+      setMsgEndereco({ tipo: 'erro', texto: 'Preencha rua e cidade.' }); return
     }
     setSalvando(true)
-    // PUT /api/usuarios/me/endereco
-    await new Promise(r => setTimeout(r, 800))
+    const response = await fetch('http://localhost:8080/api/usuarios/me', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: usuario.id, endereco: { rua: formEndereco.rua, numero: formEndereco.numero, complemento: formEndereco.complemento, bairro: formEndereco.bairro, cidade: formEndereco.cidade, uf: formEndereco.estado, cep: formEndereco.cep } })
+    })
+    if (!response.ok) { setMsgEndereco({ tipo: 'erro', texto: 'Erro ao salvar.' }); setSalvando(false); return }
     onAtualizarUsuario({ ...usuario, endereco: formEndereco })
     setMsgEndereco({ tipo: 'sucesso', texto: 'Endereco salvo!' })
     setSalvando(false)
@@ -68,13 +68,23 @@ function Conta({ setPagina, usuario, onAtualizarUsuario, onLogout }: ContaProps)
     if (!formSenha.senhaAtual || !formSenha.novaSenha) { setMsgSenha({ tipo: 'erro', texto: 'Preencha todos os campos.' }); return }
     if (formSenha.novaSenha.length < 6) { setMsgSenha({ tipo: 'erro', texto: 'Senha deve ter pelo menos 6 caracteres.' }); return }
     if (formSenha.novaSenha !== formSenha.confirmarSenha) { setMsgSenha({ tipo: 'erro', texto: 'Senhas nao coincidem.' }); return }
-
     setSalvando(true)
-    // PUT /api/usuarios/senha
-    await new Promise(r => setTimeout(r, 800))
+    const response = await fetch('http://localhost:8080/api/usuarios/senha', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: usuario.id, senhaAtual: formSenha.senhaAtual, novaSenha: formSenha.novaSenha })
+    })
+    if (!response.ok) { setMsgSenha({ tipo: 'erro', texto: 'Senha atual incorreta.' }); setSalvando(false); return }
     setFormSenha({ senhaAtual: '', novaSenha: '', confirmarSenha: '' })
     setMsgSenha({ tipo: 'sucesso', texto: 'Senha alterada!' })
     setSalvando(false)
+  }
+
+  async function excluirConta(): Promise<void> {
+    if (!window.confirm('Excluir conta permanentemente?')) return
+    await fetch(`http://localhost:8080/api/usuarios/me?id=${usuario.id}`, { method: 'DELETE' })
+    onLogout()
+    setPagina('home')
   }
 
   const inicial = usuario.nome.charAt(0).toUpperCase()
@@ -82,7 +92,6 @@ function Conta({ setPagina, usuario, onAtualizarUsuario, onLogout }: ContaProps)
   return (
     <div className="conta-page">
 
-      {/* CABECALHO */}
       <div className="conta-header">
         <div className="conta-avatar" aria-hidden="true">{inicial}</div>
         <div className="conta-header-info">
@@ -91,7 +100,6 @@ function Conta({ setPagina, usuario, onAtualizarUsuario, onLogout }: ContaProps)
         </div>
       </div>
 
-      {/* DADOS PESSOAIS */}
       <div className="conta-secao">
         <div className="conta-secao-titulo">Dados pessoais</div>
         <div className="conta-secao-corpo">
@@ -108,7 +116,6 @@ function Conta({ setPagina, usuario, onAtualizarUsuario, onLogout }: ContaProps)
         </div>
       </div>
 
-      {/* ENDERECO DE ENTREGA */}
       <div className="conta-secao">
         <div className="conta-secao-titulo">Endereco de entrega</div>
         <div className="conta-secao-corpo">
@@ -132,7 +139,6 @@ function Conta({ setPagina, usuario, onAtualizarUsuario, onLogout }: ContaProps)
         </div>
       </div>
 
-      {/* ALTERAR SENHA */}
       <div className="conta-secao">
         <div className="conta-secao-titulo">Alterar senha</div>
         <div className="conta-secao-corpo">
@@ -146,13 +152,12 @@ function Conta({ setPagina, usuario, onAtualizarUsuario, onLogout }: ContaProps)
         </div>
       </div>
 
-      {/* ZONA DE PERIGO */}
       <div className="conta-secao perigo">
         <div className="conta-secao-titulo">Zona de perigo</div>
         <div className="conta-secao-corpo">
           <p style={{ fontSize: 'var(--tamanho-sm)', color: 'var(--texto-secundario)', lineHeight: '1.7' }}>Ao excluir sua conta, todos os seus dados serao removidos permanentemente. Esta acao nao pode ser desfeita.</p>
           <div className="conta-acoes" style={{ justifyContent: 'flex-start' }}>
-            <button className="btn-excluir" onClick={() => { if (window.confirm('Excluir conta permanentemente?')) { onLogout(); setPagina('home') } }}>Excluir minha conta</button>
+            <button className="btn-excluir" onClick={excluirConta}>Excluir minha conta</button>
           </div>
         </div>
       </div>

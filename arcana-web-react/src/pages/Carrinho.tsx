@@ -15,7 +15,7 @@ interface CarrinhoProps {
   itens: ItemCarrinho[]
   onAtualizar: (itens: ItemCarrinho[]) => void
   onCompraFinalizada: () => void
-  usuario: { nome: string; sobrenome: string; email: string; endereco?: Endereco } | null
+  usuario: { id?: number; nome: string; sobrenome: string; email: string; endereco?: Endereco } | null
 }
 
 // Valor fixo de frete — futuramente calcular via API dos Correios
@@ -81,31 +81,37 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
     setErroEndereco('')
     return true
   }
-
-  // Finaliza a compra
-  async function finalizarCompra(): Promise<void> {
-    if (!usuario) { setPagina('login'); return }
-    if (!validarEndereco()) return
-
-    setFinalizando(true)
-
-    // Quando conectar ao Spring Boot, substitua por:
-    // const response = await fetch('/api/pedidos', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': `Bearer ${localStorage.getItem('token')}`
-    //   },
-    //   body: JSON.stringify({ itens, endereco, total, frete })
-    // })
-    // O Spring Boot recebe o pedido, salva no banco,
-    // e notifica o microservico de frete via Docker
-
-    await new Promise(r => setTimeout(r, 1500))
+  // Finalizar Compra Cria Pedido, metodo POST
+ async function finalizarCompra(): Promise<void> {
+  if (!usuario) { setPagina('login'); return }
+  if (!validarEndereco()) return
+  setFinalizando(true)
+  try {
+    const response = await fetch(`http://localhost:8080/api/pedidos?usuarioId=${usuario.id}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        itens: itens.map(i => ({ produtoId: i.produto.id, quantidade: i.quantidade })),
+        frete: frete,
+        endereco: {
+          rua: endereco.rua,
+          cep: endereco.cep.replace(/\D/g, ''),
+          numero: endereco.numero,
+          complemento: endereco.complemento,
+          bairro: endereco.bairro,
+          cidade: endereco.cidade,
+          uf: endereco.estado
+        }
+      })
+    })
+    if (!response.ok) throw new Error()
     onAtualizar([])
     onCompraFinalizada()
-    setFinalizando(false)
+  } catch {
+    setErroEndereco('Erro ao finalizar compra. Tente novamente.')
   }
+  setFinalizando(false)
+}
 
   return (
     <div className="carrinho-page">
