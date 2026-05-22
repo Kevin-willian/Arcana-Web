@@ -1,9 +1,3 @@
-// ============================================================
-// Carrinho.tsx — Carrinho com endereco de entrega e frete.
-// Ao finalizar, envia pedido ao backend Spring Boot
-// que notifica o sistema de frete via Docker.
-// ============================================================
-
 import { useState } from 'react'
 import { ItemCarrinho, Produto, Endereco } from '../types.ts'
 import { ShoppingCart } from 'lucide-react'
@@ -18,23 +12,34 @@ interface CarrinhoProps {
   usuario: { id?: number; nome: string; sobrenome: string; email: string; endereco?: Endereco } | null
 }
 
-// Valor fixo de frete — futuramente calcular via API dos Correios
 const FRETE_FIXO = 15.00
 
-// Produtos sugeridos no carrinho vazio
+const imagensProdutos: { [id: number]: string } = {
+  1:  '/assets/baralho-wider-tarot.jpg',
+  2:  '/assets/oraculo-baralho-das-bruxas.webp',
+  3:  '/assets/vela-preta.webp',
+  4:  '/assets/vela-roxa.webp',
+  5:  '/assets/incenso-nag-champa.webp',
+  6:  '/assets/incenso-tandalo.webp',
+  7:  '/assets/ametista-bruta.webp',
+  8:  '/assets/quartzo-rosa.webp',
+  9:  '/assets/guia-do-tarot-para-iniciantes.webp',
+  10: '/assets/bolsa-de-veludo-para-cartas.webp',
+  11: '/assets/suporte-de-madeira-para-cartas.webp',
+  12: '/assets/kit-iniciante-tarot.webp',
+}
+
 const sugestoes: Produto[] = [
-  { id: 101, nome: 'Vela Branca — Clareza', descricao: 'Paz e clareza mental.', preco: 28.50, categoria: 'velas', emoji: '' },
-  { id: 102, nome: 'Quartzo Rosa', descricao: 'Cristal do amor.', preco: 35.00, categoria: 'cristais', emoji: '' },
-  { id: 103, nome: 'Incenso Sandalo', descricao: 'Purificacao e harmonia.', preco: 18.00, categoria: 'incensos', emoji: '' },
-  { id: 104, nome: 'Bolsa de Veludo', descricao: 'Para guardar seu baralho.', preco: 22.00, categoria: 'acessorios', emoji: '' },
+  { id: 3,  nome: 'Vela Preta — Protecao', descricao: 'Vela artesanal com ervas de protecao.', preco: 28.50, categoria: 'velas', emoji: '🕯️', imagem: '/assets/vela-preta.webp' },
+  { id: 8,  nome: 'Quartzo Rosa', descricao: 'Cristal do amor e da harmonia.', preco: 35.00, categoria: 'cristais', emoji: '🩷', imagem: '/assets/quartzo-rosa.webp' },
+  { id: 5,  nome: 'Incenso Nag Champa', descricao: 'Caixa com 20 varetas.', preco: 18.00, categoria: 'incensos', emoji: '🪔', imagem: '/assets/incenso-nag-champa.webp' },
+  { id: 10, nome: 'Bolsa de Veludo para Cartas', descricao: 'Para guardar seu baralho.', preco: 22.00, categoria: 'acessorios', emoji: '👜', imagem: '/assets/bolsa-de-veludo-para-cartas.webp' },
 ]
 
 function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }: CarrinhoProps) {
 
   const [finalizando, setFinalizando] = useState<boolean>(false)
   const [etapa, setEtapa] = useState<'carrinho' | 'endereco'>('carrinho')
-
-  // Endereco de entrega — pre-preenchido com o da conta se existir
   const [endereco, setEndereco] = useState<Endereco>(
     usuario?.endereco || { rua: '', numero: '', complemento: '', bairro: '', cidade: '', estado: '', cep: '' }
   )
@@ -68,10 +73,9 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
     else onAtualizar([...itens, { produto, quantidade: 1 }])
   }
 
-  // Valida endereco antes de finalizar
   function validarEndereco(): boolean {
-    if (!endereco.cep.trim() || !endereco.rua.trim() || !endereco.bairro.trim() || !endereco.cidade.trim() ||       !endereco.estado.trim()) {
-        setErroEndereco('Preencha todos os campos obrigatorios (CEP, rua, bairro, cidade, estado).')
+    if (!endereco.cep.trim() || !endereco.rua.trim() || !endereco.bairro.trim() || !endereco.cidade.trim() || !endereco.estado.trim()) {
+      setErroEndereco('Preencha todos os campos obrigatorios (CEP, rua, bairro, cidade, estado).')
       return false
     }
     if (endereco.cep.replace(/\D/g, '').length !== 8) {
@@ -81,37 +85,37 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
     setErroEndereco('')
     return true
   }
-  // Finalizar Compra Cria Pedido, metodo POST
- async function finalizarCompra(): Promise<void> {
-  if (!usuario) { setPagina('login'); return }
-  if (!validarEndereco()) return
-  setFinalizando(true)
-  try {
-    const response = await fetch(`http://localhost:8080/api/pedidos?usuarioId=${usuario.id}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        itens: itens.map(i => ({ produtoId: i.produto.id, quantidade: i.quantidade })),
-        frete: frete,
-        endereco: {
-          rua: endereco.rua,
-          cep: endereco.cep.replace(/\D/g, ''),
-          numero: endereco.numero,
-          complemento: endereco.complemento,
-          bairro: endereco.bairro,
-          cidade: endereco.cidade,
-          uf: endereco.estado
-        }
+
+  async function finalizarCompra(): Promise<void> {
+    if (!usuario) { setPagina('login'); return }
+    if (!validarEndereco()) return
+    setFinalizando(true)
+    try {
+      const response = await fetch(`http://localhost:8080/api/pedidos?usuarioId=${usuario.id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          itens: itens.map(i => ({ produtoId: i.produto.id, quantidade: i.quantidade })),
+          frete: frete,
+          endereco: {
+            rua: endereco.rua,
+            cep: endereco.cep.replace(/\D/g, ''),
+            numero: endereco.numero,
+            complemento: endereco.complemento,
+            bairro: endereco.bairro,
+            cidade: endereco.cidade,
+            uf: endereco.estado
+          }
+        })
       })
-    })
-    if (!response.ok) throw new Error()
-    onAtualizar([])
-    onCompraFinalizada()
-  } catch {
-    setErroEndereco('Erro ao finalizar compra. Tente novamente.')
+      if (!response.ok) throw new Error()
+      onAtualizar([])
+      onCompraFinalizada()
+    } catch {
+      setErroEndereco('Erro ao finalizar compra. Tente novamente.')
+    }
+    setFinalizando(false)
   }
-  setFinalizando(false)
-}
 
   return (
     <div className="carrinho-page">
@@ -119,7 +123,6 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
         {etapa === 'carrinho' ? 'Carrinho' : 'Endereco de Entrega'}
       </h1>
 
-      {/* CARRINHO VAZIO */}
       {itens.length === 0 && etapa === 'carrinho' && (
         <div className="carrinho-vazio">
           <span className="carrinho-vazio-emoji"><ShoppingCart size={64} color="var(--cor-destaque)" /></span>
@@ -129,15 +132,12 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
         </div>
       )}
 
-      {/* ETAPA 1: CARRINHO */}
       {itens.length > 0 && etapa === 'carrinho' && (
         <div className="carrinho-layout">
           <div className="carrinho-lista">
             {itens.map(item => (
               <div key={item.produto.id} className="carrinho-item">
-                <div className="carrinho-item-img" role="img" aria-label={item.produto.nome}>
-                  {item.produto.emoji}
-                </div>
+                <img src={imagensProdutos[item.produto.id]} alt={item.produto.nome} className="carrinho-item-img" />
                 <div className="carrinho-item-info">
                   <p className="carrinho-item-nome">{item.produto.nome}</p>
                   <p className="carrinho-item-preco-unit">{formatarPreco(item.produto.preco)} cada</p>
@@ -173,14 +173,11 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
         </div>
       )}
 
-      {/* ETAPA 2: ENDERECO */}
       {etapa === 'endereco' && (
         <div className="endereco-layout">
           <div className="endereco-form">
             <h2 className="endereco-titulo">Onde entregar?</h2>
-
             {erroEndereco && <div className="campo-erro" role="alert" style={{ marginBottom: '16px', fontSize: 'var(--tamanho-sm)' }}>❌ {erroEndereco}</div>}
-
             <div className="campos-duplos" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div className="campo-grupo">
                 <label className="campo-label">CEP *</label>
@@ -191,12 +188,10 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
                 <input className="campo-input" placeholder="SP" value={endereco.estado} onChange={e => setEndereco({ ...endereco, estado: e.target.value })} maxLength={2} />
               </div>
             </div>
-
             <div className="campo-grupo" style={{ marginTop: '16px' }}>
               <label className="campo-label">Rua *</label>
               <input className="campo-input" placeholder="Nome da rua" value={endereco.rua} onChange={e => setEndereco({ ...endereco, rua: e.target.value })} />
             </div>
-
             <div className="campos-duplos" style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '16px', marginTop: '16px' }}>
               <div className="campo-grupo">
                 <label className="campo-label">Numero</label>
@@ -207,7 +202,6 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
                 <input className="campo-input" placeholder="Apto, bloco..." value={endereco.complemento || ''} onChange={e => setEndereco({ ...endereco, complemento: e.target.value })} />
               </div>
             </div>
-
             <div className="campos-duplos" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '16px' }}>
               <div className="campo-grupo">
                 <label className="campo-label">Bairro *</label>
@@ -220,7 +214,6 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
             </div>
           </div>
 
-          {/* RESUMO FINAL */}
           <div className="carrinho-resumo">
             <h2 className="resumo-titulo">Resumo final</h2>
             <div className="resumo-linha"><span>Subtotal</span><span>{formatarPreco(subtotal)}</span></div>
@@ -239,13 +232,12 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
         </div>
       )}
 
-      {/* SUGESTOES */}
       <div className="carrinho-sugestoes">
         <h2 className="sugestoes-titulo">Voce tambem pode gostar</h2>
         <div className="sugestoes-grid">
           {sugestoes.map(p => (
             <article key={p.id} className="produto-card">
-              <div className="produto-imagem" role="img" aria-label={p.nome}>{p.emoji}</div>
+              <img src={p.imagem} alt={p.nome} className="produto-imagem" />
               <div className="produto-info">
                 <span className="produto-categoria">{p.categoria}</span>
                 <h2 className="produto-nome">{p.nome}</h2>

@@ -1,13 +1,3 @@
-// ============================================================
-// Pedidos.tsx — Acompanhamento de pedidos com polling.
-//
-// Como funciona com Docker:
-// O microservico de frete (projeto separado em Docker) atualiza
-// o status do pedido no banco via Spring Boot.
-// Este componente faz polling a cada 30 segundos buscando
-// o status atualizado na API.
-// ============================================================
-
 import { useState, useEffect } from 'react'
 import { Pedido, StatusPedido, ItemCarrinho } from '../types.ts'
 import '../styles/Pedidos.css'
@@ -17,14 +7,28 @@ interface PedidosProps {
   usuario: { id?: number; nome: string; email: string } | null
 }
 
-// Configuracao de cada status: icone, titulo e descricao
+const imagensPorNome: { [nome: string]: string } = {
+  'Baralho Rider-Waite Tarot':      '/assets/baralho-wider-tarot.jpg',
+  'Oraculo das Bruxas':             '/assets/oraculo-baralho-das-bruxas.webp',
+  'Vela Preta — Protecao':          '/assets/vela-preta.webp',
+  'Vela Roxa — Intuicao':           '/assets/vela-roxa.webp',
+  'Incenso Nag Champa':             '/assets/incenso-nag-champa.webp',
+  'Incenso Sandalo':                '/assets/incenso-tandalo.webp',
+  'Ametista Bruta':                 '/assets/ametista-bruta.webp',
+  'Quartzo Rosa':                   '/assets/quartzo-rosa.webp',
+  'Guia do Tarot para Iniciantes':  '/assets/guia-do-tarot-para-iniciantes.webp',
+  'Bolsa de Veludo para Cartas':    '/assets/bolsa-de-veludo-para-cartas.webp',
+  'Suporte de Madeira para Cartas': '/assets/suporte-de-madeira-para-cartas.webp',
+  'Kit Iniciante Tarot':            '/assets/kit-iniciante-tarot.webp',
+}
+
 const configStatus: Record<StatusPedido, { icone: string; titulo: string; desc: string; ativo: boolean }> = {
-  PENDENTE:   { icone: '💳', titulo: 'Aguardando pagamento',   desc: 'Pedido recebido, aguardando confirmacao do pagamento.',                              ativo: false },
-  PREPARANDO: { icone: '📦', titulo: 'Sendo preparado',        desc: 'Estamos separando e embalando seus produtos com cuidado.',                           ativo: true  },
-  ENVIADO:    { icone: '🚚', titulo: 'Pedido enviado',         desc: 'Seu pedido saiu do estoque e esta a caminho da transportadora.',                     ativo: true  },
-  SAINDO:     { icone: '🏍️', titulo: 'Saindo para entrega',   desc: 'O entregador ja saiu com o seu pedido! Fique atento ao interfone.',                  ativo: true  },
-  ENTREGUE:   { icone: '✅', titulo: 'Pedido entregue!',       desc: 'Seu pedido foi entregue com sucesso. Obrigado pela compra!',                         ativo: false },
-  CANCELADO:  { icone: '❌', titulo: 'Pedido cancelado',       desc: 'Este pedido foi cancelado. Entre em contato se tiver duvidas.',                      ativo: false },
+  PENDENTE:   { icone: '💳', titulo: 'Aguardando pagamento',  desc: 'Pedido recebido, aguardando confirmacao do pagamento.',               ativo: false },
+  PREPARANDO: { icone: '📦', titulo: 'Sendo preparado',       desc: 'Estamos separando e embalando seus produtos com cuidado.',            ativo: true  },
+  ENVIADO:    { icone: '🚚', titulo: 'Pedido enviado',        desc: 'Seu pedido saiu do estoque e esta a caminho da transportadora.',      ativo: true  },
+  SAINDO:     { icone: '🏍️', titulo: 'Saindo para entrega',  desc: 'O entregador ja saiu com o seu pedido! Fique atento ao interfone.',   ativo: true  },
+  ENTREGUE:   { icone: '✅', titulo: 'Pedido entregue!',      desc: 'Seu pedido foi entregue com sucesso. Obrigado pela compra!',          ativo: false },
+  CANCELADO:  { icone: '❌', titulo: 'Pedido cancelado',      desc: 'Este pedido foi cancelado. Entre em contato se tiver duvidas.',       ativo: false },
 }
 
 const filtros = [
@@ -59,27 +63,26 @@ function Pedidos({ setPagina, usuario }: PedidosProps) {
   const [expandido, setExpandido]     = useState<string | null>(null)
   const [pedidos, setPedidos]         = useState<Pedido[]>(pedidosExemplo)
 
-  // Polling: verifica atualizacoes de status a cada 30 segundos
   useEffect(() => {
-  if (!usuario?.id) return
-  async function buscarPedidos(): Promise<void> {
-    const res = await fetch(`http://localhost:8080/api/pedidos?usuarioId=${usuario!.id}`)
-    const dados = await res.json()
-    setPedidos(dados.map((p: any) => ({
-      id: `#${p.id.toString(16).toUpperCase().padStart(6, '0')}`,
-      dataCriacao: new Date(p.dataCriacao).toLocaleDateString('pt-BR'),
-      status: p.status,
-      total: p.total,
-      itens: p.itens.map((item: any) => ({
-        produto: { id: item.nomeProduto, nome: item.nomeProduto, descricao: '', preco: item.precoUnitario, categoria: '', emoji: '' },
-        quantidade: item.quantidade
-      }))
-    })))
-  }
-  buscarPedidos()
-  const intervalo = setInterval(buscarPedidos, 30000)
-  return () => clearInterval(intervalo)
-}, [usuario?.id])
+    if (!usuario?.id) return
+    async function buscarPedidos(): Promise<void> {
+      const res = await fetch(`http://localhost:8080/api/pedidos?usuarioId=${usuario!.id}`)
+      const dados = await res.json()
+      setPedidos(dados.map((p: any) => ({
+        id: `#${p.id.toString(16).toUpperCase().padStart(6, '0')}`,
+        dataCriacao: new Date(p.dataCriacao).toLocaleDateString('pt-BR'),
+        status: p.status,
+        total: p.total,
+        itens: p.itens.map((item: any) => ({
+          produto: { id: item.nomeProduto, nome: item.nomeProduto, descricao: '', preco: item.precoUnitario, categoria: '', emoji: '' },
+          quantidade: item.quantidade
+        }))
+      })))
+    }
+    buscarPedidos()
+    const intervalo = setInterval(buscarPedidos, 30000)
+    return () => clearInterval(intervalo)
+  }, [usuario?.id])
 
   const pedidosFiltrados = pedidos.filter(p => filtroAtivo === 'TODOS' || p.status === filtroAtivo)
 
@@ -130,7 +133,6 @@ function Pedidos({ setPagina, usuario }: PedidosProps) {
                 </span>
               </div>
 
-              {/* DESCRICAO DO STATUS — atualizada pelo Docker/frete */}
               <div className="pedido-status-desc">
                 <span className="status-icone">{cfg.icone}</span>
                 <div>
@@ -152,7 +154,12 @@ function Pedidos({ setPagina, usuario }: PedidosProps) {
                     {pedido.itens.map((item: ItemCarrinho) => (
                       <div key={item.produto.id} className="pedido-item">
                         <div className="pedido-item-info">
-                          <div className="pedido-item-thumb">{item.produto.emoji}</div>
+                          <img
+                            src={imagensPorNome[item.produto.nome] || ''}
+                            alt={item.produto.nome}
+                            className="pedido-item-thumb"
+                            style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }}
+                          />
                           <div>
                             <p className="pedido-item-nome">{item.produto.nome}</p>
                             <p className="pedido-item-qtd">Qtd: {item.quantidade}</p>
