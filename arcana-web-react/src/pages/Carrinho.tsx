@@ -70,8 +70,8 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
 
   // Valida endereco antes de finalizar
   function validarEndereco(): boolean {
-    if (!endereco.cep.trim() || !endereco.rua.trim() || !endereco.numero.trim() || !endereco.cidade.trim() || !endereco.estado.trim()) {
-      setErroEndereco('Preencha todos os campos obrigatorios (CEP, rua, numero, cidade, estado).')
+    if (!endereco.cep.trim() || !endereco.rua.trim() || !endereco.bairro.trim() || !endereco.cidade.trim() ||       !endereco.estado.trim()) {
+        setErroEndereco('Preencha todos os campos obrigatorios (CEP, rua, bairro, cidade, estado).')
       return false
     }
     if (endereco.cep.replace(/\D/g, '').length !== 8) {
@@ -193,7 +193,7 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
 
             <div className="campos-duplos" style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '16px', marginTop: '16px' }}>
               <div className="campo-grupo">
-                <label className="campo-label">Numero *</label>
+                <label className="campo-label">Numero</label>
                 <input className="campo-input" placeholder="123" value={endereco.numero} onChange={e => setEndereco({ ...endereco, numero: e.target.value })} />
               </div>
               <div className="campo-grupo">
@@ -204,7 +204,7 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
 
             <div className="campos-duplos" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '16px' }}>
               <div className="campo-grupo">
-                <label className="campo-label">Bairro</label>
+                <label className="campo-label">Bairro *</label>
                 <input className="campo-input" placeholder="Bairro" value={endereco.bairro} onChange={e => setEndereco({ ...endereco, bairro: e.target.value })} />
               </div>
               <div className="campo-grupo">
