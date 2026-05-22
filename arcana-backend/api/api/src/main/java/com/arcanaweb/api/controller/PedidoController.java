@@ -3,6 +3,8 @@ package com.arcanaweb.api.controller;
 
 import com.arcanaweb.api.dto.DadosCriarPedido;
 import com.arcanaweb.api.dto.DadosItemPedido;
+import com.arcanaweb.api.dto.DadosRespostaItemPedido;
+import com.arcanaweb.api.dto.DadosRespostaPedido;
 import com.arcanaweb.api.model.Endereco;
 import com.arcanaweb.api.model.ItemPedido;
 import com.arcanaweb.api.model.Pedido;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +68,23 @@ public class PedidoController {
 
         pedidoRepository.save(pedido);
         return ResponseEntity.ok().build();
-
     }
+
+    @GetMapping
+    public List<DadosRespostaPedido> listarPedido (@RequestParam Long usuarioId){
+        var usuario = usuarioRepository.getReferenceById(usuarioId);     // procura pelo usuario
+        return pedidoRepository.findByUsuarioOrderByDataCriacaoDesc(usuario).stream().map(DadosRespostaPedido::new).toList();
+        //cria uma lista dos pedidos do mais recente primeiro, pra retornar no front
+    }
+
+    @PutMapping("/{id}/status")
+    @Transactional
+    public void atualizarStatus(@PathVariable Long id, @RequestBody StatusPedido status) {
+        var pedido = pedidoRepository.getReferenceById(id);
+        pedido.setStatus(status);
+        pedido.setAtualizadoEm(LocalDateTime.now());
+    }
+
+
+
 }
