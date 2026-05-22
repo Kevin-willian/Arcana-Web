@@ -9,7 +9,7 @@ public record DadosEndereco(
          String rua,
 
          @NotBlank
-         @Pattern(regexp = "\\d{9}") // o cep so pode ter 8 digitos
+         @Pattern(regexp = "\\d{8}") // o cep so pode ter 8 digitos
          String cep,
 
          String numero, // sem VALID pois é opcional

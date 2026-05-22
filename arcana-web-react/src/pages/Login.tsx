@@ -58,8 +58,6 @@ function Login({ setPagina, onLogin }: LoginProps) {
       senha: validarSenha(dadosLogin.senha),
     }
     if (Object.values(novosErros).some(e => e !== '')) { setErrosLogin(novosErros); return }
-    
-    // Login Conexão chamando a API
     setCarregando(true)
     const response = await fetch('http://localhost:8080/api/auth/login', {
       method: 'POST',
@@ -80,7 +78,6 @@ function Login({ setPagina, onLogin }: LoginProps) {
       confirmarSenha: dadosCadastro.senha !== dadosCadastro.confirmarSenha ? 'Senhas nao coincidem.' : '',
     }
     if (Object.values(novosErros).some(e => e !== '')) { setErrosCadastro(novosErros); return }
-
     setCarregando(true)
     const response = await fetch('http://localhost:8080/api/auth/cadastro', {
       method: 'POST',
@@ -95,21 +92,16 @@ function Login({ setPagina, onLogin }: LoginProps) {
   return (
     <div className="login-page">
       <div className="login-card">
-
         <div className="login-header">
           <span className="login-logo">ArcanaWeb</span>
           <p className="login-subtitle">Acesse sua conta</p>
         </div>
-
         <div className="login-tabs">
           <button className={`login-tab ${abaAtiva === 'entrar' ? 'ativo' : ''}`} onClick={() => { setAbaAtiva('entrar'); setErroGeral('') }}>Entrar</button>
           <button className={`login-tab ${abaAtiva === 'cadastrar' ? 'ativo' : ''}`} onClick={() => { setAbaAtiva('cadastrar'); setErroGeral('') }}>Cadastrar</button>
         </div>
-
         <div className="login-body">
-
           {erroGeral && <div className="campo-erro" style={{ marginBottom: '12px', fontSize: 'var(--tamanho-sm)' }} role="alert">❌ {erroGeral}</div>}
-
           {abaAtiva === 'entrar' && (
             <>
               <div className="campo-grupo">
@@ -122,13 +114,10 @@ function Login({ setPagina, onLogin }: LoginProps) {
                 <input id="login-senha" type="password" className={`campo-input ${errosLogin.senha ? 'erro' : ''}`} placeholder="••••••••" value={dadosLogin.senha} onChange={e => atualizarLogin('senha', e.target.value)} aria-invalid={!!errosLogin.senha} />
                 {errosLogin.senha && <span className="campo-erro" role="alert">{errosLogin.senha}</span>}
               </div>
-              <button className="login-btn" onClick={submeterLogin} disabled={carregando} aria-busy={carregando}>
-                {carregando ? 'Entrando...' : 'Entrar'}
-              </button>
+              <button className="login-btn" onClick={submeterLogin} disabled={carregando} aria-busy={carregando}>{carregando ? 'Entrando...' : 'Entrar'}</button>
               <div className="login-footer">Nao tem conta? <span onClick={() => setAbaAtiva('cadastrar')}>Cadastre-se</span></div>
             </>
           )}
-
           {abaAtiva === 'cadastrar' && (
             <>
               <div className="campos-duplos">
@@ -159,9 +148,7 @@ function Login({ setPagina, onLogin }: LoginProps) {
                   {errosCadastro.confirmarSenha && <span className="campo-erro" role="alert">{errosCadastro.confirmarSenha}</span>}
                 </div>
               </div>
-              <button className="login-btn" onClick={submeterCadastro} disabled={carregando} aria-busy={carregando}>
-                {carregando ? 'Criando conta...' : 'Criar conta'}
-              </button>
+              <button className="login-btn" onClick={submeterCadastro} disabled={carregando} aria-busy={carregando}>{carregando ? 'Criando conta...' : 'Criar conta'}</button>
               <div className="login-footer">Ja tem conta? <span onClick={() => setAbaAtiva('entrar')}>Entrar</span></div>
             </>
           )}

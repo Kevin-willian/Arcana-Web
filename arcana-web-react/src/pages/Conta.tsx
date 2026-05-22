@@ -80,13 +80,6 @@ function Conta({ setPagina, usuario, onAtualizarUsuario, onLogout }: ContaProps)
     setSalvando(false)
   }
 
-  async function excluirConta(): Promise<void> {
-    if (!window.confirm('Excluir conta permanentemente?')) return
-    await fetch(`http://localhost:8080/api/usuarios/me?id=${usuario.id}`, { method: 'DELETE' })
-    onLogout()
-    setPagina('home')
-  }
-
   const inicial = usuario.nome.charAt(0).toUpperCase()
 
   return (
@@ -157,7 +150,12 @@ function Conta({ setPagina, usuario, onAtualizarUsuario, onLogout }: ContaProps)
         <div className="conta-secao-corpo">
           <p style={{ fontSize: 'var(--tamanho-sm)', color: 'var(--texto-secundario)', lineHeight: '1.7' }}>Ao excluir sua conta, todos os seus dados serao removidos permanentemente. Esta acao nao pode ser desfeita.</p>
           <div className="conta-acoes" style={{ justifyContent: 'flex-start' }}>
-            <button className="btn-excluir" onClick={excluirConta}>Excluir minha conta</button>
+            <button className="btn-excluir" onClick={async () => {
+              if (!window.confirm('Excluir conta permanentemente?')) return
+              await fetch(`http://localhost:8080/api/usuarios/me?id=${usuario.id}`, { method: 'DELETE' })
+              onLogout()
+              setPagina('home')
+            }}>Excluir minha conta</button>
           </div>
         </div>
       </div>

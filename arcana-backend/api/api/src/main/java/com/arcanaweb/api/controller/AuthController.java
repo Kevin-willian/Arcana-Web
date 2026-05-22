@@ -43,7 +43,7 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Email não encontrado");
         }
 
-        if (encoder.matches(dados.senha(),usuario.get().getSenha())){ // compara a senha com o hash do banco. usuario get pega o usuario dentro do optional
+        if (!encoder.matches(dados.senha(),usuario.get().getSenha())){ // compara a senha com o hash do banco. usuario get pega o usuario dentro do optional
             //com getsenha, pega  asenha criptografada do banco confere, se as senhas não batem retorna 400
             return ResponseEntity.badRequest().body("Senha incorreta");
         }

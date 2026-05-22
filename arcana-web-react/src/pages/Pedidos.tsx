@@ -62,7 +62,6 @@ function Pedidos({ setPagina, usuario }: PedidosProps) {
   // Polling: verifica atualizacoes de status a cada 30 segundos
   useEffect(() => {
   if (!usuario?.id) return
-
   async function buscarPedidos(): Promise<void> {
     const res = await fetch(`http://localhost:8080/api/pedidos?usuarioId=${usuario!.id}`)
     const dados = await res.json()
@@ -77,7 +76,6 @@ function Pedidos({ setPagina, usuario }: PedidosProps) {
       }))
     })))
   }
-
   buscarPedidos()
   const intervalo = setInterval(buscarPedidos, 30000)
   return () => clearInterval(intervalo)
