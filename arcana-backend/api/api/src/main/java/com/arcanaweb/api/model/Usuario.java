@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Date;
 
@@ -44,4 +48,6 @@ public class Usuario {
         this.senha= dados.senha();
         this.endereco = dados.endereco() != null ? new Endereco(dados.endereco()) : null; // verifica se o endereço veio no cadastro se não veio deixa null
     }
+
+
 }
