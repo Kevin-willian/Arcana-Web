@@ -32,7 +32,7 @@ interface Aviso {
 
 // ---- Numero do WhatsApp da cartomante --------------------
 // Substitua pelo numero real (somente digitos + DDI)
-const WHATSAPP_NUMERO = '5562999999999'
+const WHATSAPP_NUMERO = '5562993238949'
 
 // ---- Funcao que abre o WhatsApp com mensagem pronta ------
 // encodeURIComponent codifica caracteres especiais para URL

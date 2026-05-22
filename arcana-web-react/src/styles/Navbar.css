@@ -173,8 +173,49 @@
 }
 
 @media (max-width: 768px) {
-  .navbar { padding: 0 var(--espaco-md); }
-  .navbar-links { display: none; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; background: var(--fundo-pagina); border-bottom: 1px solid var(--borda-sutil); padding: var(--espaco-md); gap: var(--espaco-md); z-index: 99; }
+  .navbar {
+    padding: 0 var(--espaco-md);
+    height: 60px;
+  }
+
+  .navbar-logo {
+    font-size: 26px;
+  }
+
+  .navbar-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--fundo-pagina);
+    border-bottom: 1px solid var(--borda-sutil);
+    padding: var(--espaco-md);
+    gap: var(--espaco-md);
+    z-index: 99;
+  }
+
   .navbar-links.aberto { display: flex; }
   .navbar-toggle { display: flex; }
+
+  .navbar-acoes {
+    gap: 8px;
+  }
+
+  .navbar-btn-login {
+    padding: 4px 12px;
+    font-size: 11px;
+  }
+
+  .navbar-carrinho {
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  .navbar-usuario-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
 }
