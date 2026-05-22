@@ -69,4 +69,8 @@ public class Usuario {
             }
         }
     }
+
+    public void excluir() {
+        this.ativo = false;
+    }
 }

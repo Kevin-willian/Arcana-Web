@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -49,4 +46,13 @@ public class UsuarioController {
         usuario.setSenha(encoder.encode(dados.novaSenha()));
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("me")
+    @Transactional
+    public void desativar(@RequestParam Long id){ // anotação pra pegar apenas um parametro especifico no caso vindo na url apo o ?
+        var usuario = repository.getReferenceById(id);
+        usuario.excluir();
+    }
+
+
 }
