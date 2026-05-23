@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Usuario, Endereco } from '../types.ts'
 import '../styles/Conta.css'
 
+const API_URL = 'https://arcana-web-production.up.railway.app'
+
 interface ContaProps {
   setPagina: (pagina: string) => void
   usuario: Usuario | null
@@ -37,7 +39,7 @@ function Conta({ setPagina, usuario, onAtualizarUsuario, onLogout }: ContaProps)
     if (!formDados.nome.trim()) { setMsgDados({ tipo: 'erro', texto: 'Nome e obrigatorio.' }); return }
     if (erroEmail) { setMsgDados({ tipo: 'erro', texto: erroEmail }); return }
     setSalvando(true)
-    const response = await fetch('http://localhost:8080/api/usuarios/me', {
+    const response = await fetch(`${API_URL}/api/usuarios/me`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: usuario.id, nome: formDados.nome, sobrenome: formDados.sobrenome, email: formDados.email })
@@ -53,7 +55,7 @@ function Conta({ setPagina, usuario, onAtualizarUsuario, onLogout }: ContaProps)
       setMsgEndereco({ tipo: 'erro', texto: 'Preencha rua e cidade.' }); return
     }
     setSalvando(true)
-    const response = await fetch('http://localhost:8080/api/usuarios/me', {
+    const response = await fetch(`${API_URL}/api/usuarios/me`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: usuario.id, endereco: { rua: formEndereco.rua, numero: formEndereco.numero, complemento: formEndereco.complemento, bairro: formEndereco.bairro, cidade: formEndereco.cidade, uf: formEndereco.estado, cep: formEndereco.cep } })
@@ -69,7 +71,7 @@ function Conta({ setPagina, usuario, onAtualizarUsuario, onLogout }: ContaProps)
     if (formSenha.novaSenha.length < 6) { setMsgSenha({ tipo: 'erro', texto: 'Senha deve ter pelo menos 6 caracteres.' }); return }
     if (formSenha.novaSenha !== formSenha.confirmarSenha) { setMsgSenha({ tipo: 'erro', texto: 'Senhas nao coincidem.' }); return }
     setSalvando(true)
-    const response = await fetch('http://localhost:8080/api/usuarios/senha', {
+    const response = await fetch(`${API_URL}/api/usuarios/senha`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: usuario.id, senhaAtual: formSenha.senhaAtual, novaSenha: formSenha.novaSenha })
@@ -84,7 +86,6 @@ function Conta({ setPagina, usuario, onAtualizarUsuario, onLogout }: ContaProps)
 
   return (
     <div className="conta-page">
-
       <div className="conta-header">
         <div className="conta-avatar" aria-hidden="true">{inicial}</div>
         <div className="conta-header-info">
@@ -152,14 +153,13 @@ function Conta({ setPagina, usuario, onAtualizarUsuario, onLogout }: ContaProps)
           <div className="conta-acoes" style={{ justifyContent: 'flex-start' }}>
             <button className="btn-excluir" onClick={async () => {
               if (!window.confirm('Excluir conta permanentemente?')) return
-              await fetch(`http://localhost:8080/api/usuarios/me?id=${usuario.id}`, { method: 'DELETE' })
+              await fetch(`${API_URL}/api/usuarios/me?id=${usuario.id}`, { method: 'DELETE' })
               onLogout()
               setPagina('home')
             }}>Excluir minha conta</button>
           </div>
         </div>
       </div>
-
     </div>
   )
 }

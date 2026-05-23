@@ -12,6 +12,8 @@ interface LoginProps {
 interface DadosLogin { email: string; senha: string }
 interface DadosCadastro { nome: string; sobrenome: string; email: string; senha: string; confirmarSenha: string }
 
+const API_URL = 'https://arcana-web-production.up.railway.app'
+
 function validarEmail(email: string): string {
   if (!email.trim()) return 'E-mail e obrigatorio.'
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'E-mail invalido.'
@@ -59,7 +61,7 @@ function Login({ setPagina, onLogin }: LoginProps) {
     }
     if (Object.values(novosErros).some(e => e !== '')) { setErrosLogin(novosErros); return }
     setCarregando(true)
-    const response = await fetch('http://localhost:8080/api/auth/login', {
+    const response = await fetch(`${API_URL}/api/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: dadosLogin.email, senha: dadosLogin.senha })
@@ -79,7 +81,7 @@ function Login({ setPagina, onLogin }: LoginProps) {
     }
     if (Object.values(novosErros).some(e => e !== '')) { setErrosCadastro(novosErros); return }
     setCarregando(true)
-    const response = await fetch('http://localhost:8080/api/auth/cadastro', {
+    const response = await fetch(`${API_URL}/api/auth/cadastro`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nome: dadosCadastro.nome, sobrenome: dadosCadastro.sobrenome, email: dadosCadastro.email, senha: dadosCadastro.senha })

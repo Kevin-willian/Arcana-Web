@@ -37,42 +37,25 @@ const filtros = [
   { id: 'SAINDO', label: 'Saindo' }, { id: 'ENTREGUE', label: 'Entregue' },
 ]
 
-const pedidosExemplo: Pedido[] = [
-  { id: '#2025-001', dataCriacao: '10/05/2025', status: 'PREPARANDO', total: 125.90,
-    itens: [
-      { produto: { id: 1, nome: 'Baralho Rider-Waite Tarot', descricao: '', preco: 89.90, categoria: 'cartas', emoji: '🃏' }, quantidade: 1 },
-      { produto: { id: 5, nome: 'Incenso Nag Champa', descricao: '', preco: 18.00, categoria: 'incensos', emoji: '🪔' }, quantidade: 2 },
-    ]
-  },
-  { id: '#2025-002', dataCriacao: '05/05/2025', status: 'SAINDO', total: 73.50,
-    itens: [
-      { produto: { id: 7, nome: 'Ametista Bruta', descricao: '', preco: 45.00, categoria: 'cristais', emoji: '💜' }, quantidade: 1 },
-      { produto: { id: 4, nome: 'Vela Roxa', descricao: '', preco: 28.50, categoria: 'velas', emoji: '🕯️' }, quantidade: 1 },
-    ]
-  },
-  { id: '#2025-003', dataCriacao: '01/05/2025', status: 'ENTREGUE', total: 149.00,
-    itens: [
-      { produto: { id: 12, nome: 'Kit Iniciante Tarot', descricao: '', preco: 149.00, categoria: 'cartas', emoji: '✨' }, quantidade: 1 },
-    ]
-  },
-]
+const API_URL = 'https://arcana-web-production.up.railway.app'
 
 function Pedidos({ setPagina, usuario }: PedidosProps) {
 
   const [filtroAtivo, setFiltroAtivo] = useState<string>('TODOS')
   const [expandido, setExpandido]     = useState<string | null>(null)
-  const [pedidos, setPedidos]         = useState<Pedido[]>(pedidosExemplo)
+  const [pedidos, setPedidos]         = useState<Pedido[]>([])
 
   useEffect(() => {
     if (!usuario?.id) return
     async function buscarPedidos(): Promise<void> {
-      const res = await fetch(`http://localhost:8080/api/pedidos?usuarioId=${usuario!.id}`)
+      const res = await fetch(`${API_URL}/api/pedidos?usuarioId=${usuario!.id}`)
       const dados = await res.json()
       setPedidos(dados.map((p: any) => ({
         id: `#${p.id.toString(16).toUpperCase().padStart(6, '0')}`,
         dataCriacao: new Date(p.dataCriacao).toLocaleDateString('pt-BR'),
         status: p.status,
         total: p.total,
+        frete: p.frete ?? 0,
         itens: p.itens.map((item: any) => ({
           produto: { id: item.nomeProduto, nome: item.nomeProduto, descricao: '', preco: item.precoUnitario, categoria: '', emoji: '' },
           quantidade: item.quantidade

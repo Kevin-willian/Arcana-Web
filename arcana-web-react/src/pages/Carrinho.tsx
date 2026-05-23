@@ -4,6 +4,8 @@ import { ShoppingCart } from 'lucide-react'
 import '../styles/Carrinho.css'
 import '../styles/Loja.css'
 
+const API_URL = 'https://arcana-web-production.up.railway.app'
+
 interface CarrinhoProps {
   setPagina: (pagina: string) => void
   itens: ItemCarrinho[]
@@ -91,7 +93,7 @@ function Carrinho({ setPagina, itens, onAtualizar, onCompraFinalizada, usuario }
     if (!validarEndereco()) return
     setFinalizando(true)
     try {
-      const response = await fetch(`http://localhost:8080/api/pedidos?usuarioId=${usuario.id}`, {
+      const response = await fetch(`${API_URL}/api/pedidos?usuarioId=${usuario.id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
