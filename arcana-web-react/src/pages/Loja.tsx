@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Produto } from '../types.ts'
 import { ShoppingCart } from 'lucide-react'
 import '../styles/Loja.css'
+const API_URL = 'https://arcana-web-production.up.railway.app'
 
 interface LojaProps {
   setPagina: (pagina: string) => void
@@ -21,18 +22,18 @@ const categorias: CategoriaItem[] = [
 ]
 
 const imagensProdutos: { [id: number]: string } = {
-  1:  '../../public/assets/baralho-wider-tarot.jpg',
-  2:  '../assets/oraculo-baralho-das-bruxas.webp',
-  3:  '../assets/vela-preta.webp',
-  4:  '../assets/vela-roxa.webp',
-  5:  '../assets/incenso-nag-champa.webp',
-  6:  '../assets/incenso-tandalo.webp',
-  7:  '../assets/ametista-bruta.webp',
-  8:  '../assets/quartzo-rosa.webp',
-  9:  '../assets/guia-do-tarot-para-iniciantes.webp',
-  10: '../assets/bolsa-de-veludo-para-cartas.webp',
-  11: '../assets/suporte-de-madeira-para-cartas.webp',
-  12: '../assets/kit-iniciante-tarot.webp',
+  1:  '/assets/baralho-wider-tarot.jpg',
+  2:  '/assets/oraculo-baralho-das-bruxas.webp',
+  3:  '/assets/vela-preta.webp',
+  4:  '/assets/vela-roxa.webp',
+  5:  '/assets/incenso-nag-champa.webp',
+  6:  '/assets/incenso-tandalo.webp',
+  7:  '/assets/ametista-bruta.webp',
+  8:  '/assets/quartzo-rosa.webp',
+  9:  '/assets/guia-do-tarot-para-iniciantes.webp',
+  10: '/assets/bolsa-de-veludo-para-cartas.webp',
+  11: '/assets/suporte-de-madeira-para-cartas.webp',
+  12: '/assets/kit-iniciante-tarot.webp',
 }
 
 const produtosEstaticos: Produto[] = [
@@ -58,7 +59,7 @@ function Loja({ setPagina, onAdicionarCarrinho }: LojaProps) {
   const [produtos, setProdutos] = useState<Produto[]>(produtosEstaticos)
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/produtos')
+    fetch(`${API_URL}/api/produtos`)
       .then(r => r.json())
       .then((dados: { id: number; preco: number; estoque: number }[]) => {
         setProdutos(produtosEstaticos.map(p => {
