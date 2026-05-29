@@ -149,5 +149,3 @@ const API_URL = 'http://localhost:8080'
 
 Configurado em `CorsConfig.java` via `WebMvcConfigurer`, liberando requisicoes de `localhost:5173` em desenvolvimento e da URL do Vercel em producao, com os metodos GET, POST, PUT e DELETE.
 
-## Prints da aplicacao
-> (adicionar antes de entregar)
