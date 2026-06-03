@@ -21,7 +21,9 @@ public class RabbitMQConfig {
 
     @Bean
     public MessageConverter messageConverter() {
-        return new Jackson2JsonMessageConverter();
+        return new org.springframework.amqp.support.converter.Jackson2JsonMessageConverter(
+                new com.fasterxml.jackson.databind.ObjectMapper()
+        );
     }
 
     @Bean
