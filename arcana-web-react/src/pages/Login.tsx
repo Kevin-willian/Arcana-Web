@@ -12,7 +12,8 @@ interface LoginProps {
 interface DadosLogin { email: string; senha: string }
 interface DadosCadastro { nome: string; sobrenome: string; email: string; senha: string; confirmarSenha: string }
 
-const API_URL = 'https://arcana-web-production.up.railway.app'
+//const API_URL = 'https://arcana-web-production.up.railway.app'
+const API_URL = 'http://localhost:8080'
 
 function validarEmail(email: string): string {
   if (!email.trim()) return 'E-mail e obrigatorio.'

@@ -37,8 +37,8 @@ const filtros = [
   { id: 'SAINDO', label: 'Saindo' }, { id: 'ENTREGUE', label: 'Entregue' },
 ]
 
-const API_URL = 'https://arcana-web-production.up.railway.app'
-
+//const API_URL = 'https://arcana-web-production.up.railway.app'
+const API_URL = 'http://localhost:8080'
 function Pedidos({ setPagina, usuario }: PedidosProps) {
 
   const [filtroAtivo, setFiltroAtivo] = useState<string>('TODOS')

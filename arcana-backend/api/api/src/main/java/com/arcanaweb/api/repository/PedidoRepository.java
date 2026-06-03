@@ -10,4 +10,6 @@ public interface PedidoRepository extends JpaRepository<Pedido,Long> {
 
     List<Pedido> findByUsuarioOrderByDataCriacaoDesc(Usuario usuario);
     // bucar por campo do usuario da entidade, ordena por dada de criação do recente pro mais antigo
+
+    List<Pedido> findAllByOrderByDataCriacaoDesc();
 }

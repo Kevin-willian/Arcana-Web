@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import { Produto } from '../types.ts'
 import { ShoppingCart } from 'lucide-react'
 import '../styles/Loja.css'
-const API_URL = 'https://arcana-web-production.up.railway.app'
+//const API_URL = 'https://arcana-web-production.up.railway.app'
+
+const API_URL = 'http://localhost:8080'
 
 interface LojaProps {
   setPagina: (pagina: string) => void

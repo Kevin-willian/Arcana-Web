@@ -1,6 +1,5 @@
 package com.arcanaweb.api.controller;
 
-
 import com.arcanaweb.api.dto.DadosCriarPedido;
 import com.arcanaweb.api.dto.DadosItemPedido;
 import com.arcanaweb.api.dto.DadosRespostaItemPedido;
@@ -9,6 +8,7 @@ import com.arcanaweb.api.model.Endereco;
 import com.arcanaweb.api.model.ItemPedido;
 import com.arcanaweb.api.model.Pedido;
 import com.arcanaweb.api.model.StatusPedido;
+import com.arcanaweb.api.producer.PedidoProducer;
 import com.arcanaweb.api.repository.PedidoRepository;
 import com.arcanaweb.api.repository.ProdutoRepository;
 import com.arcanaweb.api.repository.UsuarioRepository;
@@ -33,48 +33,55 @@ public class PedidoController {
     private ProdutoRepository produtoRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private PedidoProducer pedidoProducer;
 
     @PostMapping
     @Transactional
     public ResponseEntity criarPedido(@RequestBody @Valid DadosCriarPedido dados, @RequestParam Long usuarioId){
-        var usuario = usuarioRepository.getReferenceById(usuarioId);                                            //busca o usuario no banco pelo id
+        var usuario = usuarioRepository.getReferenceById(usuarioId);
 
-        //criação do pedido, instanciando tudo, usando os Setter do pedido
         var pedido = new Pedido();
         pedido.setUsuario(usuario);
         pedido.setStatus(StatusPedido.PENDENTE);
         pedido.setFrete(dados.frete());
         pedido.setEndereco(new Endereco(dados.endereco()));
 
+        BigDecimal total = BigDecimal.ZERO;
+        List<ItemPedido> itens = new ArrayList<>();
 
-        //criaçao dos itens do pedido e calculo do total
-        BigDecimal total = BigDecimal.ZERO;                                                                     // começa o total em zero pra ir somando conforme passa pelos itens
-        List<ItemPedido> itens = new ArrayList<>();                                                             //crio uma array da lista de todos os itens do produto, lista dinamica sem tamanho especifico
-
-        for (DadosItemPedido dadosItem:dados.itens()){                                                      // ele vai entrar na lista e verificar cada produto q está na listaItens, verificando um por um
-            var produto = produtoRepository.getReferenceById(dadosItem.produtoId());                        //busca o produto no banco pelo id , pra pegar o preco pelo banco de dados
-            var item = new ItemPedido();                                                                     //cria o item do pedido com todos os campos, qual pedido pertence, qual produto, quantidade
+        for (DadosItemPedido dadosItem : dados.itens()) {
+            var produto = produtoRepository.getReferenceById(dadosItem.produtoId());
+            var item = new ItemPedido();
             item.setPedido(pedido);
             item.setProduto(produto);
             item.setQuantidade(dadosItem.quantidade());
             item.setPrecoUnitario(produto.getPreco());
-            total = total.add(produto.getPreco().multiply(BigDecimal.valueOf(dadosItem.quantidade())));      //pega a quantidade de itens q o usuario colocou,como é um int, converte em Bigdecimal
-                                                                                                            // pega o preço do produto do banco, multiplica pela quantidade, soma o total de item por item
-            itens.add(item);                                                                //adiciona o item na lista
+            total = total.add(produto.getPreco().multiply(BigDecimal.valueOf(dadosItem.quantidade())));
+            itens.add(item);
         }
 
-        pedido.setTotal(total.add(dados.frete()));                          // faz a atribuição final de todos os itens + o frete e coloca na lista de itens no pedido
+        pedido.setTotal(total.add(dados.frete()));
         pedido.setItens(itens);
-
         pedidoRepository.save(pedido);
+
+        // publica a mensagem no RabbitMQ após salvar o pedido
+        pedidoProducer.publicarPedidoCriado(
+                pedido.getId(),
+                pedido.getStatus().name(),
+                pedido.getTotal().doubleValue()
+        );
+
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public List<DadosRespostaPedido> listarPedido (@RequestParam Long usuarioId){
-        var usuario = usuarioRepository.getReferenceById(usuarioId);     // procura pelo usuario
-        return pedidoRepository.findByUsuarioOrderByDataCriacaoDesc(usuario).stream().map(DadosRespostaPedido::new).toList();
-        //cria uma lista dos pedidos do mais recente primeiro, pra retornar no front
+    public List<DadosRespostaPedido> listarPedido(@RequestParam Long usuarioId) {
+        var usuario = usuarioRepository.getReferenceById(usuarioId);
+        return pedidoRepository.findByUsuarioOrderByDataCriacaoDesc(usuario)
+                .stream()
+                .map(DadosRespostaPedido::new)
+                .toList();
     }
 
     @PutMapping("/{id}/status")
@@ -85,6 +92,11 @@ public class PedidoController {
         pedido.setAtualizadoEm(LocalDateTime.now());
     }
 
-
-
+    @GetMapping("/todos")
+    public List<DadosRespostaPedido> listarTodosPedidos() {
+        return pedidoRepository.findAllByOrderByDataCriacaoDesc()
+                .stream()
+                .map(DadosRespostaPedido::new)
+                .toList();
+    }
 }

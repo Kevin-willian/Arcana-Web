@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { Usuario, Endereco } from '../types.ts'
 import '../styles/Conta.css'
 
-const API_URL = 'https://arcana-web-production.up.railway.app'
-
+//const API_URL = 'https://arcana-web-production.up.railway.app'
+const API_URL = 'http://localhost:8080'
 interface ContaProps {
   setPagina: (pagina: string) => void
   usuario: Usuario | null

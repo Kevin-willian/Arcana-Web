@@ -4,7 +4,8 @@ import { ShoppingCart } from 'lucide-react'
 import '../styles/Carrinho.css'
 import '../styles/Loja.css'
 
-const API_URL = 'https://arcana-web-production.up.railway.app'
+//const API_URL = 'https://arcana-web-production.up.railway.app'
+const API_URL = 'http://localhost:8080'
 
 interface CarrinhoProps {
   setPagina: (pagina: string) => void
